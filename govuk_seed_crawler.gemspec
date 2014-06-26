@@ -17,6 +17,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.add_runtime_dependency "govuk_mirrorer", "~> 1.3.1"
+
   spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "gemfury", "~> 0.4.23"
   spec.add_development_dependency "gem_publisher", "~> 1.3"
