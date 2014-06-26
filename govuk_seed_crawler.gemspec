@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = GovukSeedCrawler::VERSION
   spec.authors       = ["Matt Bostock"]
   spec.email         = ["matt.bostock@digital.cabinet-office.gov.uk"]
-  spec.summary       = %q{https://github.com/alphagov/govuk_crawler_worker}
+  spec.summary       = %q{Retrieves a list of URLs to seed the crawler by publishing them to a RabbitMQ exchange.}
   spec.homepage      = "https://github.gds/gds/govuk_seed_crawler"
   spec.license       = "MIT"
 
