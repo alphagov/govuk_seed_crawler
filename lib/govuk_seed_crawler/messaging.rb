@@ -10,16 +10,16 @@ module GovukSeedCrawler
     end
 
     def connect_to_topic
-      @exchange = channel.topic(@exchange, :durable => true)
+      @exchange = channel.topic(@exchange_name, :durable => true)
     end
 
     def publish_url(url)
       unless @exchange raise "Exchange not defined"
-      unless @topic raise "Topic not defined"
+      unless @topic_name raise "Topic not defined"
       unless url raise "URL not defined"
 
       url = url.strip
-      @exchange.publish(url, :routing_key => @topic)
+      @exchange.publish(url, :routing_key => @topic_name)
       # log something
     end
 
