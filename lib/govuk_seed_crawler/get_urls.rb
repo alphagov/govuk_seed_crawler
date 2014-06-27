@@ -2,7 +2,7 @@ require 'govuk_mirrorer/indexer'
 
 module GovukSeedCrawler
   class GetUrls
-    attr_reader @urls
+    attr_reader :urls
 
     def initialize(site_root)
       raise "No :site_root defined" unless site_root
