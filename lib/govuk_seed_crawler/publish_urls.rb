@@ -1,8 +1,13 @@
 module GovukSeedCrawler
   class PublishUrls
-    def self.publish(messenger, urls)
-      urls.each do |url|
-        messenger.publish_url(url)
+    def self.publish(:topic_exchange, :topic_name, :urls)
+      raise "Exchange not defined" unless :topic_exchange
+      raise "No URLs defined" if :urls.empty?
+
+      :urls.each do |url|
+        url = url.strip
+        :topic_exchange.publish(url, :routing_key => :topic_name)
+        # log something
       end
     end
   end
