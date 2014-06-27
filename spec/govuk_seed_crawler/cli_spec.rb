@@ -30,6 +30,73 @@ describe GovukSeedCrawler::Cli do
   subject { CommandRun.new(args) }
 
   describe "normal usage" do
+    context "when specifying AMQP connection parameters" do
+      let (:options) do
+        {
+          :amqp_host => nil,
+          :amqp_username => nil,
+          :amqp_password => nil,
+          :amqp_exchange => nil,
+          :amqp_topic => nil,
+        }
+      end
+
+      describe "when passed an AMQP host" do
+        let(:args) { %w{--host localhost} }
+
+        it "should instantiate Seeder with the right options" do
+          options[:amqp_host] = 'localhost'
+
+          expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
+          subject
+        end
+      end
+
+      describe "when passed an AMQP username" do
+        let(:args) { %w{--username dirk} }
+
+        it "should instantiate Seeder with the right options" do
+          options[:amqp_username] = 'dirk'
+
+          expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
+          subject
+        end
+      end
+
+      describe "when passed an AMQP password" do
+        let(:args) { %w{--password lolcats} }
+
+        it "should instantiate Seeder with the right options" do
+          options[:amqp_password] = 'lolcats'
+
+          expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
+          subject
+        end
+      end
+
+      describe "when passed an AMQP exchange" do
+        let(:args) { %w{--exchange #} }
+
+        it "should instantiate Seeder with the right options" do
+          options[:amqp_exchange] = '#'
+
+          expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
+          subject
+        end
+      end
+
+      describe "when passed an AMQP topic" do
+        let(:args) { %w{--topic publish} }
+
+        it "should instantiate Seeder with the right options" do
+          options[:amqp_topic] = 'publish'
+
+          expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
+          subject
+        end
+      end
+    end
+
     context "when asked to display version" do
       let(:args) { %w{--version} }
 
