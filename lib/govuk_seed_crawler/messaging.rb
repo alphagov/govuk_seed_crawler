@@ -10,6 +10,7 @@ module GovukSeedCrawler
     end
 
     def connect_to_topic
+      unless @exchange_name raise "No exchange specified"
       @exchange = channel.topic(@exchange_name, :durable => true)
     end
 
