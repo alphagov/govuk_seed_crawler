@@ -34,24 +34,24 @@ https://github.com/alphagov/govuk_crawler_worker
         opts.separator ""
         opts.separator "Options:"
 
-        opts.on("--host HOST", "AMQP host to publish to") do
-          @options[:amqp_host] = true
+        opts.on("--host HOST", "AMQP host to publish to") do |host|
+          @options[:amqp_host] = host
         end
 
-        opts.on("--username USERNAME", "AMQP username") do |f|
-          @options[:amqp_username] = f
+        opts.on("--username USERNAME", "AMQP username") do |username|
+          @options[:amqp_username] = username
         end
 
-        opts.on("--password PASSWORD", "AMQP password") do |c|
-          @options[:amqp_password] = c
+        opts.on("--password PASSWORD", "AMQP password") do |password|
+          @options[:amqp_password] = password
         end
 
-        opts.on("--exchange EXCHANGE", "AMQP exchange") do |c|
-          @options[:amqp_exchange] = c
+        opts.on("--exchange EXCHANGE", "AMQP exchange") do |exchange|
+          @options[:amqp_exchange] = exchange
         end
 
-        opts.on("--topic TOPIC", "AMQP topic") do |c|
-          @options[:amqp_topic] = c
+        opts.on("--topic TOPIC", "AMQP topic") do |topic|
+          @options[:amqp_topic] = topic
         end
 
         opts.on("-h", "--help", "Print usage and exit") do
