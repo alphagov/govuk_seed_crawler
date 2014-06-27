@@ -1,4 +1,5 @@
 require 'govuk_mirrorer/indexer'
+require 'govuk_mirrorer/statsd'
 
 module GovukSeedCrawler
   class GetUrls
