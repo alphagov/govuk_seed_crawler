@@ -1,5 +1,3 @@
-require 'topic_exchange'
-
 module GovukSeedCrawler
   class Seeder
     def self.seed(options = {})
