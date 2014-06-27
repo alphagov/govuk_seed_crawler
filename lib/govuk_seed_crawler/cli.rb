@@ -15,8 +15,7 @@ module GovukSeedCrawler
     end
 
     def run
-      raise "Not implemented"
-      #conf = GovukSeedCrawler::DoWhatever(@options)
+      Seeder::seed(@options)
     end
 
     private
