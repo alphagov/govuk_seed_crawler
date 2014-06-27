@@ -23,8 +23,8 @@ module GovukSeedCrawler
       @channel = conn.create_channel
     end
 
-    def connect_to_topic_exchange(:exchange_name)
-      @exchange = channel.topic(:exchange_name, :durable => true)
+    def connect_to_topic_exchange(exchange_name)
+      @exchange = channel.topic(exchange_name, :durable => true)
     end
   end
 end
