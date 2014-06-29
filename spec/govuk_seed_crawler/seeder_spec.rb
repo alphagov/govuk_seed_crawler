@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe GovukSeedCrawler::Seeder do
-  subject { GovukSeedCrawler::Seeder }
+  subject { GovukSeedCrawler::Seeder::seed(options) }
 
   let(:mock_get_urls) do
     double(:mock_get_urls, :urls => true)
@@ -12,7 +12,7 @@ describe GovukSeedCrawler::Seeder do
   end
 
   let(:mock_topic_exchange) do
-    double(:mock_topic_exchange, :publish => true)
+    double(:mock_topic_exchange, :publish => true, :close => true)
   end
 
 
@@ -37,7 +37,16 @@ describe GovukSeedCrawler::Seeder do
       allow(GovukSeedCrawler::TopicExchange).to receive(:new).and_return(mock_topic_exchange)
 
       expect(GovukSeedCrawler::PublishUrls).to receive(:publish).with(mock_topic_exchange, options[:amqp_topic], urls)
-      subject::seed(options)
+      subject
+    end
+
+    it "closes the connection when done" do
+      allow(GovukSeedCrawler::GetUrls).to receive(:new).and_return(mock_get_urls)
+      allow(mock_get_urls).to receive(:urls).and_return(urls)
+      allow(GovukSeedCrawler::TopicExchange).to receive(:new).and_return(mock_topic_exchange)
+
+      expect(mock_topic_exchange).to receive(:close)
+      subject
     end
   end
 end
