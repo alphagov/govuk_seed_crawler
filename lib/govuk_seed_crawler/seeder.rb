@@ -5,6 +5,8 @@ module GovukSeedCrawler
       topic_exchange = TopicExchange.new(options)
 
       PublishUrls::publish(topic_exchange, options[:amqp_topic], urls)
+
+      topic_exchange.close
     end
   end
 end
