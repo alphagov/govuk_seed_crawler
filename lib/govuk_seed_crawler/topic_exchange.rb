@@ -24,7 +24,7 @@ module GovukSeedCrawler
     end
 
     def connect_to_topic_exchange(exchange_name)
-      @exchange = channel.topic(exchange_name, :durable => true)
+      @exchange = @channel.topic(exchange_name, :durable => true)
     end
   end
 end
