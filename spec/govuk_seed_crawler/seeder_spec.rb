@@ -12,7 +12,11 @@ describe GovukSeedCrawler::Seeder do
   end
 
   let(:mock_topic_exchange) do
-    double(:mock_topic_exchange, :publish => true, :close => true)
+    double(:mock_topic_exchange, :exchange => mock_topic_exchange_obj, :close => true)
+  end
+
+  let(:mock_topic_exchange_obj) do
+    double(:mock_topic_exchange_obj, :publish => true)
   end
 
 
@@ -35,8 +39,9 @@ describe GovukSeedCrawler::Seeder do
       allow(GovukSeedCrawler::GetUrls).to receive(:new).and_return(mock_get_urls)
       allow(mock_get_urls).to receive(:urls).and_return(urls)
       allow(GovukSeedCrawler::TopicExchange).to receive(:new).and_return(mock_topic_exchange)
+      allow(mock_topic_exchange).to receive(:exchange).and_return(mock_topic_exchange_obj)
 
-      expect(GovukSeedCrawler::PublishUrls).to receive(:publish).with(mock_topic_exchange, options[:amqp_topic], urls)
+      expect(GovukSeedCrawler::PublishUrls).to receive(:publish).with(mock_topic_exchange_obj, options[:amqp_topic], urls)
       subject
     end
 
