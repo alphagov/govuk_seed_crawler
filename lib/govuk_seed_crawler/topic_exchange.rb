@@ -7,7 +7,7 @@ module GovukSeedCrawler
 
     def initialize(exchange_name, connection_options = {})
       connect(connection_options)
-      connect_to_topic_exchange(exchange_name)
+      set_topic_exchange(exchange_name)
     end
 
     def close
@@ -23,7 +23,7 @@ module GovukSeedCrawler
       @channel = conn.create_channel
     end
 
-    def connect_to_topic_exchange(exchange_name)
+    def set_topic_exchange(exchange_name)
       @exchange = @channel.topic(exchange_name, :durable => true)
     end
   end
