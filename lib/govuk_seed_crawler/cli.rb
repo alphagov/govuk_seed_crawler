@@ -14,10 +14,10 @@ module GovukSeedCrawler
       }
 
       parse(argv_array)
+      set_logging_level(@options)
     end
 
     def run
-      set_logging_level(@options)
       Seeder::seed(@options)
     end
 
