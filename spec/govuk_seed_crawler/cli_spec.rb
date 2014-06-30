@@ -38,6 +38,8 @@ describe GovukSeedCrawler::Cli do
           :amqp_password => nil,
           :amqp_exchange => nil,
           :amqp_topic => nil,
+          :quiet => false,
+          :verbose => false,
           :site_root => "https://example.com/",
         }
       end
@@ -95,6 +97,36 @@ describe GovukSeedCrawler::Cli do
           expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
           subject
         end
+      end
+    end
+
+    context "when asked to be quiet" do
+      let(:args) { %w{https://example.com/ --quiet} }
+
+      it "set the logging level to ERROR" do
+        allow(GovukSeedCrawler::Seeder).to receive(:seed)
+        subject
+        expect(GovukSeedCrawler.logger.level).to eq(Logger::ERROR)
+      end
+    end
+
+    context "when asked to be verbose" do
+      let(:args) { %w{https://example.com/ --verbose} }
+
+      it "set the logging level to ERROR" do
+        allow(GovukSeedCrawler::Seeder).to receive(:seed)
+        subject
+        expect(GovukSeedCrawler.logger.level).to eq(Logger::DEBUG)
+      end
+    end
+
+    context "when asked to be neither quiet nor verbose" do
+      let(:args) { %w{https://example.com/} }
+
+      it "set the logging level to INFO" do
+        allow(GovukSeedCrawler::Seeder).to receive(:seed)
+        subject
+        expect(GovukSeedCrawler.logger.level).to eq(Logger::INFO)
       end
     end
 

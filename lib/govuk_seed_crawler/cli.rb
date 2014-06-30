@@ -9,12 +9,15 @@ module GovukSeedCrawler
         :amqp_password => nil,
         :amqp_exchange => nil,
         :amqp_topic => nil,
+        :quiet => false,
+        :verbose => false,
       }
 
       parse(argv_array)
     end
 
     def run
+      set_logging_level(@options)
       Seeder::seed(@options)
     end
 
@@ -54,6 +57,14 @@ https://github.com/alphagov/govuk_crawler_worker
           @options[:amqp_topic] = topic
         end
 
+        opts.on("--quiet", "Quiet output") do |_quiet|
+          @options[:quiet] = true
+        end
+
+        opts.on("--verbose", "Verbose output") do |_verbose|
+          @options[:verbose] = true
+        end
+
         opts.on("-h", "--help", "Print usage and exit") do
           $stderr.puts opts
           exit
@@ -80,6 +91,16 @@ https://github.com/alphagov/govuk_crawler_worker
       $stderr.puts "#{$0}: #{error}"
       $stderr.puts @usage_text
       exit 2
+    end
+
+    def set_logging_level(cli_options)
+      if cli_options[:verbose]
+        GovukSeedCrawler.logger.level = Logger::DEBUG
+      elsif cli_options[:quiet]
+        GovukSeedCrawler.logger.level = Logger::ERROR
+      else
+        GovukSeedCrawler.logger.level = Logger::INFO
+      end
     end
   end
 end
