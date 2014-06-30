@@ -5,10 +5,11 @@ describe GovukSeedCrawler do
   options = {
       :amqp_exchange => "govuk_seed_crawler_integration",
       :amqp_topic => "#",
-      :amqp_vhost => "/",
-      :amqp_exchange_type => "topic",
       :site_root => "https://www.gov.uk/",
   }
+
+  amqp_exchange_type = "topic"
+  amqp_vhost = "/"
 
   rabbitmq_mgmt_client = RabbitMQ::HTTP::Client.new("http://guest:guest@127.0.0.1:15672")
 
@@ -16,11 +17,11 @@ describe GovukSeedCrawler do
   let(:probable_min_number_of_urls) { 1000 }
 
   before(:each) do
-    rabbitmq_mgmt_client.declare_exchange(options[:amqp_vhost], options[:amqp_exchange], { :type => options[:amqp_exchange_type] })
+    rabbitmq_mgmt_client.declare_exchange(amqp_vhost, options[:amqp_exchange], { :type => amqp_exchange_type })
   end
 
   after(:each) do
-    rabbitmq_mgmt_client.delete_exchange(options[:amqp_vhost], options[:amqp_exchange])
+    rabbitmq_mgmt_client.delete_exchange(amqp_vhost, options[:amqp_exchange])
   end
 
   it "publishes URLs it finds to an AMQP topic exchange" do
