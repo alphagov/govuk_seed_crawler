@@ -56,6 +56,17 @@ describe GovukSeedCrawler::Cli do
         end
       end
 
+      describe "when passed an AMQP port" do
+        let(:args) { %w{https://example.com/ --port 9999} }
+
+        it "should instantiate Seeder with the right options" do
+          options[:amqp_port] = '9999'
+
+          expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
+          subject
+        end
+      end
+
       describe "when passed an AMQP username" do
         let(:args) { %w{https://example.com/ --username dirk} }
 

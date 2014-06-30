@@ -5,6 +5,7 @@ module GovukSeedCrawler
     def initialize(argv_array)
       @options = {
         :amqp_host => "localhost",
+        :amqp_port => "5672",
         :amqp_username => "guest",
         :amqp_password => "guest",
         :amqp_exchange => "govuk_crawler_exchange",
@@ -39,6 +40,10 @@ https://github.com/alphagov/govuk_crawler_worker
 
         opts.on("--host HOST", "AMQP host to publish to, defaults to '#{@options[:amqp_host]}'") do |host|
           @options[:amqp_host] = host
+        end
+
+        opts.on("--port PORT", "AMQP port, defaults to '#{@options[:amqp_port]}'") do |port|
+          @options[:amqp_port] = port
         end
 
         opts.on("--username USERNAME", "AMQP username, defaults to '#{@options[:amqp_username]}'") do |username|
