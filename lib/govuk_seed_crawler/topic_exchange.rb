@@ -5,9 +5,9 @@ module GovukSeedCrawler
 
     attr_reader :exchange
 
-    def initialize(options = {})
-      connect(options)
-      connect_to_topic_exchange(options[:amqp_exchange])
+    def initialize(exchange_name, connection_options = {})
+      connect(connection_options)
+      connect_to_topic_exchange(exchange_name)
     end
 
     def close
@@ -16,8 +16,8 @@ module GovukSeedCrawler
 
     private
 
-    def connect(options)
-      conn = Bunny.new(options)
+    def connect(connection_options)
+      conn = Bunny.new(connection_options)
       conn.start
 
       @channel = conn.create_channel
