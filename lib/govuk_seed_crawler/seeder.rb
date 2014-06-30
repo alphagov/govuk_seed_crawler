@@ -8,7 +8,7 @@ module GovukSeedCrawler
       topic_connection = TopicExchange.new(options[:amqp_exchange], amqp_connection_options)
       topic_exchange = topic_connection.exchange
 
-      urls = GetUrls.new(options[:site_root]).urls
+      urls = GetUrls::urls(options[:site_root])
 
       PublishUrls::publish(topic_exchange, options[:amqp_topic], urls)
 
