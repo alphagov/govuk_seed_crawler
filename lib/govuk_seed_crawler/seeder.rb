@@ -1,7 +1,6 @@
 module GovukSeedCrawler
   class Seeder
     def self.seed(options = {})
-
       amqp_connection_options = options.reject do |key, _value|
         %w{:amqp_host :amqp_port :amqp_username :amqp_password}.include?(key)
       end
