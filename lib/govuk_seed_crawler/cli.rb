@@ -23,7 +23,7 @@ module GovukSeedCrawler
     def parse(args)
       opt_parser = OptionParser.new do |opts|
         opts.banner = <<-EOS
-Usage: #{$0} [options]
+Usage: #{$0} site_root [options]
 
 Seeds an AMQP topic exchange with messages, each containing a URL, for the GOV.UK Crawler Worker
 to consume:
@@ -71,6 +71,9 @@ https://github.com/alphagov/govuk_crawler_worker
       rescue OptionParser::InvalidOption => e
         exit_error_usage(e)
       end
+
+      exit_error_usage("must supply site_root") unless args.size == 1
+      @options[:site_root] = args.first
     end
 
     def exit_error_usage(error)

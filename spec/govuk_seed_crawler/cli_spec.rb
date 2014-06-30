@@ -38,11 +38,12 @@ describe GovukSeedCrawler::Cli do
           :amqp_password => nil,
           :amqp_exchange => nil,
           :amqp_topic => nil,
+          :site_root => "https://example.com/",
         }
       end
 
       describe "when passed an AMQP host" do
-        let(:args) { %w{--host localhost} }
+        let(:args) { %w{https://example.com/ --host localhost} }
 
         it "should instantiate Seeder with the right options" do
           options[:amqp_host] = 'localhost'
@@ -53,7 +54,7 @@ describe GovukSeedCrawler::Cli do
       end
 
       describe "when passed an AMQP username" do
-        let(:args) { %w{--username dirk} }
+        let(:args) { %w{https://example.com/ --username dirk} }
 
         it "should instantiate Seeder with the right options" do
           options[:amqp_username] = 'dirk'
@@ -64,7 +65,7 @@ describe GovukSeedCrawler::Cli do
       end
 
       describe "when passed an AMQP password" do
-        let(:args) { %w{--password lolcats} }
+        let(:args) { %w{https://example.com/ --password lolcats} }
 
         it "should instantiate Seeder with the right options" do
           options[:amqp_password] = 'lolcats'
@@ -75,7 +76,7 @@ describe GovukSeedCrawler::Cli do
       end
 
       describe "when passed an AMQP exchange" do
-        let(:args) { %w{--exchange #} }
+        let(:args) { %w{https://example.com/ --exchange #} }
 
         it "should instantiate Seeder with the right options" do
           options[:amqp_exchange] = '#'
@@ -86,7 +87,7 @@ describe GovukSeedCrawler::Cli do
       end
 
       describe "when passed an AMQP topic" do
-        let(:args) { %w{--topic publish} }
+        let(:args) { %w{https://example.com/ --topic publish} }
 
         it "should instantiate Seeder with the right options" do
           options[:amqp_topic] = 'publish'
@@ -111,14 +112,14 @@ describe GovukSeedCrawler::Cli do
     end
 
     context "when asked to display help" do
-      let(:args) { %w{--help} }
+      let(:args) { %w{https://example.com/ --help} }
 
       it "should not instantiate Seeder" do
         expect(GovukSeedCrawler::Seeder).not_to receive(:seed)
       end
 
       it "should print usage and exit normally" do
-        expect(subject.stderr).to match(/\AUsage: \S+ \[options\]\n/)
+        expect(subject.stderr).to match(/\AUsage: \S+ site_root \[options\]\n/)
         expect(subject.exitstatus).to eq(0)
       end
     end
@@ -140,7 +141,7 @@ describe GovukSeedCrawler::Cli do
     end
 
     context "when given an unrecognised argument" do
-      let(:args) { %w{--this-is-garbage} }
+      let(:args) { %w{https://example.com/ --this-is-garbage} }
 
       it_behaves_like "print usage and exit abnormally", "invalid option: --this-is-garbage"
     end
