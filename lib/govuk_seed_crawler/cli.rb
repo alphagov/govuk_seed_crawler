@@ -4,11 +4,11 @@ module GovukSeedCrawler
   class Cli
     def initialize(argv_array)
       @options = {
-        :amqp_host => nil,
-        :amqp_username => nil,
-        :amqp_password => nil,
-        :amqp_exchange => nil,
-        :amqp_topic => nil,
+        :amqp_host => "localhost",
+        :amqp_username => "guest",
+        :amqp_password => "guest",
+        :amqp_exchange => "govuk_crawler_exchange",
+        :amqp_topic => "#",
         :quiet => false,
         :verbose => false,
       }
@@ -37,31 +37,31 @@ https://github.com/alphagov/govuk_crawler_worker
         opts.separator ""
         opts.separator "Options:"
 
-        opts.on("--host HOST", "AMQP host to publish to") do |host|
+        opts.on("--host HOST", "AMQP host to publish to, defaults to '#{@options[:amqp_host]}'") do |host|
           @options[:amqp_host] = host
         end
 
-        opts.on("--username USERNAME", "AMQP username") do |username|
+        opts.on("--username USERNAME", "AMQP username, defaults to '#{@options[:amqp_username]}'") do |username|
           @options[:amqp_username] = username
         end
 
-        opts.on("--password PASSWORD", "AMQP password") do |password|
+        opts.on("--password PASSWORD", "AMQP password, defaults to '#{@options[:amqp_password]}'") do |password|
           @options[:amqp_password] = password
         end
 
-        opts.on("--exchange EXCHANGE", "AMQP exchange") do |exchange|
+        opts.on("--exchange EXCHANGE", "AMQP exchange, defaults to '#{@options[:amqp_exchange]}'") do |exchange|
           @options[:amqp_exchange] = exchange
         end
 
-        opts.on("--topic TOPIC", "AMQP topic") do |topic|
+        opts.on("--topic TOPIC", "AMQP topic, defaults to '#{@options[:amqp_topic]}'") do |topic|
           @options[:amqp_topic] = topic
         end
 
-        opts.on("--quiet", "Quiet output") do |_quiet|
+        opts.on("--quiet", "Quiet output, defaults to '#{@options[:quiet]}'") do |_quiet|
           @options[:quiet] = true
         end
 
-        opts.on("--verbose", "Verbose output") do |_verbose|
+        opts.on("--verbose", "Verbose output, defaults to '#{@options[:verbose]}'") do |_verbose|
           @options[:verbose] = true
         end
 

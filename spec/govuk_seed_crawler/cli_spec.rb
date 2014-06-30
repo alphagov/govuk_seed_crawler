@@ -33,11 +33,12 @@ describe GovukSeedCrawler::Cli do
     context "when specifying AMQP connection parameters" do
       let (:options) do
         {
-          :amqp_host => nil,
-          :amqp_username => nil,
-          :amqp_password => nil,
-          :amqp_exchange => nil,
-          :amqp_topic => nil,
+          :amqp_host => "localhost",
+          :amqp_port => "5672",
+          :amqp_username => "guest",
+          :amqp_password => "guest",
+          :amqp_exchange => "govuk_crawler_exchange",
+          :amqp_topic => "#",
           :quiet => false,
           :verbose => false,
           :site_root => "https://example.com/",
