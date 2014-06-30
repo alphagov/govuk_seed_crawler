@@ -10,6 +10,8 @@ module GovukSeedCrawler
 
       indexer = GovukMirrorer::Indexer.new(site_root)
       @urls = indexer.all_start_urls
+      number_urls = @urls.count
+      GovukSeedCrawler.logger.info("Found #{number_urls} URLs")
     end
   end
 end

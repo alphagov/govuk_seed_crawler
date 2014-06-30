@@ -7,7 +7,7 @@ module GovukSeedCrawler
       urls.each do |url|
         url = url.strip
         topic_exchange.publish(url, :routing_key => topic_name)
-        # log something
+        GovukSeedCrawler.logger.debug("Publishing URL '#{url}' to topic '#{topic_name}'")
       end
     end
   end
