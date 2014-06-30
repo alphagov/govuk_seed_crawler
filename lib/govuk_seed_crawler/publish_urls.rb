@@ -9,6 +9,8 @@ module GovukSeedCrawler
         topic_exchange.publish(url, :routing_key => topic_name)
         GovukSeedCrawler.logger.debug("Publishing URL '#{url}' to topic '#{topic_name}'")
       end
+
+      GovukSeedCrawler.logger.info("Published #{urls.count} URLs to topic '#{topic_name}'")
     end
   end
 end
