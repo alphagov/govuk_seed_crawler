@@ -1,13 +1,16 @@
 module GovukSeedCrawler
   class PublishUrls
-    def self.publish(topic_exchange, topic_name, urls)
-      raise "Exchange not defined" unless topic_exchange
+    def self.publish(amqp_channel, exchange_name, topic_name, urls)
+      raise "AMQP channel not passed" unless amqp_channel
+      raise "Exchange not defined" unless exchange_name
+      raise "Topic name not defined" unless topic_name
       raise "No URLs defined" if urls.empty?
 
       urls.each do |url|
         GovukSeedCrawler.logger.debug("Publishing URL '#{url}' to topic '#{topic_name}'")
 
         url = url.strip
+        topic_exchange = amqp_channel.topic(exchange_name, :durable => true)
         topic_exchange.publish(url, :routing_key => topic_name)
       end
 

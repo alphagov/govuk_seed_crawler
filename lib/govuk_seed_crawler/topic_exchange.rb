@@ -1,13 +1,12 @@
 require 'bunny'
 
 module GovukSeedCrawler
-  class TopicExchange
+  class AmqpClient
 
-    attr_reader :exchange
+    attr_reader :channel
 
-    def initialize(exchange_name, connection_options = {})
+    def initialize(connection_options = {})
       connect(connection_options)
-      set_topic_exchange(exchange_name)
     end
 
     def close
@@ -21,10 +20,6 @@ module GovukSeedCrawler
       conn.start
 
       @channel = conn.create_channel
-    end
-
-    def set_topic_exchange(exchange_name)
-      @exchange = @channel.topic(exchange_name, :durable => true)
     end
   end
 end

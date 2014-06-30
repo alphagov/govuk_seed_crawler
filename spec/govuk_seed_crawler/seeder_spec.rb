@@ -11,12 +11,16 @@ describe GovukSeedCrawler::Seeder do
     double(:mock_publish_urls, :publish => true)
   end
 
-  let(:mock_topic_exchange) do
-    double(:mock_topic_exchange, :exchange => mock_topic_exchange_obj, :close => true)
+  let(:mock_amqp_client) do
+    double(:mock_amqp_client, :channel => mock_amqp_channel, :close => true)
   end
 
-  let(:mock_topic_exchange_obj) do
-    double(:mock_topic_exchange_obj, :publish => true)
+  let(:mock_amqp_channel) do
+    double(:mock_amqp_channel, :topic => true)
+  end
+
+  let(:mock_amqp_exchange) do
+    double(:mock_amqp_exchange, :publish => true)
   end
 
 
@@ -34,23 +38,22 @@ describe GovukSeedCrawler::Seeder do
     }
   end
 
-  context "under normal usage" do
-    it "calls GovukSeedCrawler::PublishUrls::publish with the correct arguments" do
+  before(:each) do
       allow(GovukSeedCrawler::GetUrls).to receive(:new).and_return(mock_get_urls)
       allow(mock_get_urls).to receive(:urls).and_return(urls)
-      allow(GovukSeedCrawler::TopicExchange).to receive(:new).and_return(mock_topic_exchange)
-      allow(mock_topic_exchange).to receive(:exchange).and_return(mock_topic_exchange_obj)
+      allow(GovukSeedCrawler::AmqpClient).to receive(:new).and_return(mock_amqp_client)
+      allow(mock_amqp_client).to receive(:exchange).and_return(mock_amqp_exchange)
+  end
 
-      expect(GovukSeedCrawler::PublishUrls).to receive(:publish).with(mock_topic_exchange_obj, options[:amqp_topic], urls)
+  context "under normal usage" do
+    it "calls GovukSeedCrawler::PublishUrls::publish with the correct arguments" do
+      expect(GovukSeedCrawler::PublishUrls).to receive(:publish).with(mock_amqp_channel, options[:amqp_exchange], options[:amqp_topic], urls)
       subject
     end
 
     it "closes the connection when done" do
-      allow(GovukSeedCrawler::GetUrls).to receive(:new).and_return(mock_get_urls)
-      allow(mock_get_urls).to receive(:urls).and_return(urls)
-      allow(GovukSeedCrawler::TopicExchange).to receive(:new).and_return(mock_topic_exchange)
-
-      expect(mock_topic_exchange).to receive(:close)
+      allow(GovukSeedCrawler::PublishUrls).to receive(:publish).with(mock_amqp_channel, options[:amqp_exchange], options[:amqp_topic], urls)
+      expect(mock_amqp_client).to receive(:close)
       subject
     end
   end
