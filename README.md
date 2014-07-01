@@ -21,13 +21,13 @@ Or install it yourself as:
 To run with the RabbitMQ connection defaults:
 
 ```bash
-bundle exec govuk_seed_crawler https://www.gov.uk/
+bundle exec seed-crawler https://www.gov.uk/
 ```
 
 Run with `--help` to see a list of options:
 
 ```bash
-bundle exec govuk_seed_crawler --help
+bundle exec seed-crawler --help
 ```
 
 ## Contributing
