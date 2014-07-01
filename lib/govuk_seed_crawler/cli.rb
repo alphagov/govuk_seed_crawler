@@ -88,7 +88,13 @@ https://github.com/alphagov/govuk_crawler_worker
         exit_error_usage(e)
       end
 
-      exit_error_usage("must supply site_root") unless args.size == 1
+      case
+      when args.size == 0
+        exit_error_usage("must supply site_root")
+      when args.size > 1
+        exit_error_usage("too many arguments")
+      end
+
       @options[:site_root] = args.first
     end
 

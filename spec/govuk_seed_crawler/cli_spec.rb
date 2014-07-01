@@ -184,6 +184,24 @@ describe GovukSeedCrawler::Cli do
       end
     end
 
+    context "when given no arguments" do
+      let(:args) { %w{} }
+
+      it_behaves_like "print usage and exit abnormally", "must supply site_root"
+    end
+
+    context "when given too many arguments" do
+      let(:args) { %w{https://example.com howdy} }
+
+      it_behaves_like "print usage and exit abnormally", "too many arguments"
+    end
+
+    context "when no site_root is supplied" do
+      let(:args) { %w{--host localhost} }
+
+      it_behaves_like "print usage and exit abnormally", "must supply site_root"
+    end
+
     context "when given an unrecognised argument" do
       let(:args) { %w{https://example.com/ --this-is-garbage} }
 
