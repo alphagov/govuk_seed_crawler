@@ -21,7 +21,7 @@ describe GovukSeedCrawler::UrlPublisher do
     ]
   end
 
-  let (:amqp_connection_options) { {} }
+  let (:amqp_connect_options) { {} }
   let(:exchange_name) { "publish" }
   let(:topic_name) { "#" }
 
@@ -31,7 +31,7 @@ describe GovukSeedCrawler::UrlPublisher do
   end
 
   subject do
-    url_publisher = GovukSeedCrawler::UrlPublisher.new(amqp_connection_options)
+    url_publisher = GovukSeedCrawler::UrlPublisher.new(amqp_connect_options)
     url_publisher.exchange_name = exchange_name
     url_publisher.topic_name = topic_name
     url_publisher

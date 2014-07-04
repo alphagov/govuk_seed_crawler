@@ -2,8 +2,8 @@ module GovukSeedCrawler
   class UrlPublisher
     attr_writer :exchange_name, :topic_name
 
-    def initialize(amqp_connection_options)
-      @amqp_client = AmqpClient.new(amqp_connection_options)
+    def initialize(amqp_connect_options)
+      @amqp_client = AmqpClient.new(amqp_connect_options)
       @amqp_channel = @amqp_client.channel
     end
 
