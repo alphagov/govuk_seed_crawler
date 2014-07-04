@@ -20,7 +20,7 @@ describe GovukSeedCrawler::Seeder do
   end
 
   let(:mock_url_publisher) do
-    double(:mock_url_publisher, :publish => true)
+    double(:mock_url_publisher, :publish_urls => true)
   end
 
   let(:urls) do
@@ -41,12 +41,12 @@ describe GovukSeedCrawler::Seeder do
 
   context "under normal usage" do
     it "calls GovukSeedCrawler::UrlPublisher#publish with the correct arguments" do
-      expect(mock_url_publisher).to receive(:publish).with(urls)
+      expect(mock_url_publisher).to receive(:publish_urls).with(urls)
       subject
     end
 
     it "closes the connection when done" do
-      expect(mock_url_publisher).to receive(:publish).with(urls)
+      allow(mock_url_publisher).to receive(:publish_urls).with(urls)
       expect(mock_amqp_client).to receive(:close)
       subject
     end

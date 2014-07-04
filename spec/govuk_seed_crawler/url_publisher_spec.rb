@@ -35,21 +35,21 @@ describe GovukSeedCrawler::UrlPublisher do
     end
   end
 
-  context "when calling UrlPublisher::publish" do
+  context "when calling UrlPublisher::publish_urls" do
     subject { GovukSeedCrawler::UrlPublisher.new(mock_amqp_channel, "publish", "#") }
 
     it "publishes to the topic exchange with the correct arguments" do
       expect(mock_topic_exchange).to receive(:publish).with(urls.first, { :routing_key => "#" })
-      subject.publish(urls)
+      subject.publish_urls(urls)
     end
 
     it "publishes each of the URLs passed in once only" do
       expect(mock_topic_exchange).to receive(:publish).exactly(urls.count).times
-      subject.publish(urls)
+      subject.publish_urls(urls)
     end
 
     it "raises an error no URLs are passed in" do
-      expect{ subject.publish({}) }.to raise_error("No URLs defined")
+      expect{ subject.publish_urls({}) }.to raise_error("No URLs defined")
     end
   end
 end
