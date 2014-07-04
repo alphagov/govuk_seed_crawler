@@ -13,7 +13,7 @@ module GovukSeedCrawler
     end
 
     def self.extract_amqp_connect_options(options)
-      amqp_connect_options = options.reject do |key, _value|
+      options.reject do |key, _value|
         %w{:amqp_host :amqp_port :amqp_username :amqp_password}.include?(key) == false
       end
     end
