@@ -25,7 +25,7 @@ describe GovukSeedCrawler::Seeder do
   end
 
   before(:each) do
-      allow(GovukSeedCrawler::GetUrls).to receive(:new).and_return(mock_get_urls)
+      allow(GovukSeedCrawler::Indexer).to receive(:new).and_return(mock_get_urls)
       allow(mock_get_urls).to receive(:urls).and_return(urls)
 
       allow(GovukSeedCrawler::UrlPublisher).to receive(:new).and_return(mock_url_publisher)

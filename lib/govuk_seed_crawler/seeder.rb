@@ -5,7 +5,7 @@ module GovukSeedCrawler
         %w{:amqp_host :amqp_port :amqp_username :amqp_password}.include?(key) == false
       end
 
-      urls = GetUrls.new(options[:site_root]).urls
+      urls = Indexer.new(options[:site_root]).urls
 
       url_publisher = UrlPublisher.new(amqp_connection_options)
 

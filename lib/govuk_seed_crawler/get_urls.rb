@@ -2,7 +2,7 @@ require 'govuk_mirrorer/indexer'
 require 'govuk_mirrorer/statsd'
 
 module GovukSeedCrawler
-  class GetUrls
+  class Indexer
     attr_reader :urls
 
     def initialize(site_root)

@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe GovukSeedCrawler::GetUrls do
-  subject { GovukSeedCrawler::GetUrls.new('https://example.com/') }
+describe GovukSeedCrawler::Indexer do
+  subject { GovukSeedCrawler::Indexer.new('https://example.com/') }
 
   context "under normal usage" do
     let(:mock_indexer) do
       double(:mock_indexer, :all_start_urls => [])
     end
 
-    it "responds to GetUrls#urls" do
+    it "responds to Indexer#urls" do
       allow(GovukMirrorer::Indexer).to receive(:new).and_return(mock_indexer)
       expect(subject).to respond_to(:urls)
     end
