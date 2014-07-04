@@ -1,6 +1,11 @@
 module GovukSeedCrawler
   class UrlPublisher
-    attr_writer :amqp_channel, :exchange_name, :topic_name
+    attr_writer :exchange_name, :topic_name
+
+    def initialize(amqp_connection_options)
+      @amqp_client = AmqpClient.new(amqp_connection_options)
+      @amqp_channel = @amqp_client.channel
+    end
 
     def publish_urls(urls)
       raise "AMQP channel not passed" unless @amqp_channel
@@ -14,6 +19,10 @@ module GovukSeedCrawler
       end
 
       GovukSeedCrawler.logger.info("Published #{urls.count} URLs to topic '#{@topic_name}'")
+    end
+
+    def close
+      @amqp_client.close
     end
 
     private

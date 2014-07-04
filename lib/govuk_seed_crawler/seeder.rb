@@ -5,18 +5,14 @@ module GovukSeedCrawler
         %w{:amqp_host :amqp_port :amqp_username :amqp_password}.include?(key) == false
       end
 
-      amqp_client = AmqpClient.new(amqp_connection_options)
-      amqp_channel = amqp_client.channel
-
       urls = GetUrls.new(options[:site_root]).urls
 
-      url_publisher = UrlPublisher.new
-      url_publisher.amqp_channel = amqp_channel
+      url_publisher = UrlPublisher.new(amqp_connection_options)
+
       url_publisher.exchange_name = options[:amqp_exchange]
       url_publisher.topic_name = options[:amqp_topic]
       url_publisher.publish_urls(urls)
-
-      amqp_client.close
+      url_publisher.close
     end
   end
 end
