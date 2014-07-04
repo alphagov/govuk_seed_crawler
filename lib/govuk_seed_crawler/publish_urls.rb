@@ -1,5 +1,5 @@
 module GovukSeedCrawler
-  class PublishUrls
+  class UrlPublisher
     def initialize(amqp_channel, exchange_name, topic_name)
       raise "AMQP channel not passed" unless amqp_channel
       raise "Exchange not defined" unless exchange_name

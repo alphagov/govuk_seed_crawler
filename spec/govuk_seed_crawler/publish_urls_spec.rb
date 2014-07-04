@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe GovukSeedCrawler::PublishUrls do
+describe GovukSeedCrawler::UrlPublisher do
   let(:mock_amqp_channel) do
     double(:mock_amqp_channel, :topic => mock_topic_exchange)
   end
@@ -19,7 +19,7 @@ describe GovukSeedCrawler::PublishUrls do
 
   context "when instantiated" do
     describe "with incorrect arguments" do
-      subject { GovukSeedCrawler::PublishUrls }
+      subject { GovukSeedCrawler::UrlPublisher }
 
       it "raises an error no AMQP channel is passed in" do
         expect{ subject.new(nil, "publish", "#") }.to raise_error("AMQP channel not passed")
@@ -35,8 +35,8 @@ describe GovukSeedCrawler::PublishUrls do
     end
   end
 
-  context "when calling PublishUrls::publish" do
-    subject { GovukSeedCrawler::PublishUrls.new(mock_amqp_channel, "publish", "#") }
+  context "when calling UrlPublisher::publish" do
+    subject { GovukSeedCrawler::UrlPublisher.new(mock_amqp_channel, "publish", "#") }
 
     it "publishes to the topic exchange with the correct arguments" do
       expect(mock_topic_exchange).to receive(:publish).with(urls.first, { :routing_key => "#" })

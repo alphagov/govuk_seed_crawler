@@ -36,11 +36,11 @@ describe GovukSeedCrawler::Seeder do
       allow(mock_get_urls).to receive(:urls).and_return(urls)
       allow(GovukSeedCrawler::AmqpClient).to receive(:new).and_return(mock_amqp_client)
       allow(mock_amqp_client).to receive(:exchange).and_return(mock_amqp_exchange)
-      allow(GovukSeedCrawler::PublishUrls).to receive(:new).and_return(mock_url_publisher)
+      allow(GovukSeedCrawler::UrlPublisher).to receive(:new).and_return(mock_url_publisher)
   end
 
   context "under normal usage" do
-    it "calls GovukSeedCrawler::PublishUrls#publish with the correct arguments" do
+    it "calls GovukSeedCrawler::UrlPublisher#publish with the correct arguments" do
       expect(mock_url_publisher).to receive(:publish).with(urls)
       subject
     end
