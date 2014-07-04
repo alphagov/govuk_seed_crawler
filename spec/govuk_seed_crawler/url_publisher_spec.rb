@@ -21,7 +21,7 @@ describe GovukSeedCrawler::UrlPublisher do
     ]
   end
 
-  let (:amqp_connect_options) { {} }
+  let(:amqp_connect_options) { {} }
   let(:exchange_name) { "publish" }
   let(:topic_name) { "#" }
 
