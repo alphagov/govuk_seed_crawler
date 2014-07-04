@@ -29,6 +29,10 @@ end
 describe GovukSeedCrawler::Cli do
   subject { CommandRun.new(args) }
 
+  before(:each) {
+    GovukSeedCrawler.logger.level = Logger::INFO
+  }
+
   describe "normal usage" do
     context "when specifying AMQP connection parameters" do
       let (:options) do
