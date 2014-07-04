@@ -10,16 +10,16 @@ module GovukSeedCrawler
     end
 
     def close
-      @channel.close
+      @conn.close
     end
 
     private
 
     def connect(connection_options)
-      conn = Bunny.new(connection_options)
-      conn.start
+      @conn = Bunny.new(connection_options)
+      @conn.start
 
-      @channel = conn.create_channel
+      @channel = @conn.create_channel
     end
   end
 end
