@@ -9,7 +9,6 @@ module GovukSeedCrawler
       urls.each do |url|
         GovukSeedCrawler.logger.debug("Publishing URL '#{url}' to topic '#{topic_name}'")
 
-        url = url.strip
         topic_exchange = amqp_channel.topic(exchange_name, :durable => true)
         topic_exchange.publish(url, :routing_key => topic_name)
       end
