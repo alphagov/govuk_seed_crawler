@@ -29,8 +29,10 @@ end
 describe GovukSeedCrawler::Cli do
   subject { CommandRun.new(args) }
 
+  default_logging_level = GovukSeedCrawler.logger.level
+
   before(:each) {
-    GovukSeedCrawler.logger.level = Logger::INFO
+    GovukSeedCrawler.logger.level = default_logging_level
   }
 
   describe "normal usage" do
