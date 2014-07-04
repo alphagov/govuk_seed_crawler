@@ -7,6 +7,11 @@ require 'govuk_seed_crawler/version'
 
 module GovukSeedCrawler
   def self.logger
-    @logger ||=Logger.new(STDOUT)
+    unless @logger
+      @logger = Logger.new(STDOUT)
+      @logger.level = Logger::INFO
+    end
+
+    @logger
   end
 end

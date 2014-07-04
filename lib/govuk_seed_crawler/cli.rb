@@ -109,8 +109,6 @@ https://github.com/alphagov/govuk_crawler_worker
         GovukSeedCrawler.logger.level = Logger::DEBUG
       elsif cli_options[:quiet]
         GovukSeedCrawler.logger.level = Logger::ERROR
-      else
-        GovukSeedCrawler.logger.level = Logger::INFO
       end
     end
   end
