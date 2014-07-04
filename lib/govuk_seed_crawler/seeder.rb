@@ -10,7 +10,10 @@ module GovukSeedCrawler
 
       urls = GetUrls.new(options[:site_root]).urls
 
-      url_publisher = UrlPublisher.new(amqp_channel, options[:amqp_exchange], options[:amqp_topic])
+      url_publisher = UrlPublisher.new
+      url_publisher.amqp_channel = amqp_channel
+      url_publisher.exchange_name = options[:amqp_exchange]
+      url_publisher.topic_name = options[:amqp_topic]
       url_publisher.publish_urls(urls)
 
       amqp_client.close
