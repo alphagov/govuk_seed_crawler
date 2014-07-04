@@ -3,6 +3,10 @@ require 'spec_helper'
 describe GovukSeedCrawler::Seeder do
   subject { GovukSeedCrawler::Seeder::seed(options) }
 
+  let(:mock_get_urls) do
+    double(:mock_get_urls, :urls => true)
+  end
+
   let(:mock_publish_urls) do
     double(:mock_publish_urls, :publish => true)
   end
@@ -32,7 +36,8 @@ describe GovukSeedCrawler::Seeder do
 
   context "under normal usage" do
     it "calls GovukSeedCrawler::PublishUrls::publish with the correct arguments" do
-      allow(GovukSeedCrawler::GetUrls).to receive(:urls).and_return(urls)
+      allow(GovukSeedCrawler::GetUrls).to receive(:new).and_return(mock_get_urls)
+      allow(mock_get_urls).to receive(:urls).and_return(urls)
       allow(GovukSeedCrawler::TopicExchange).to receive(:new).and_return(mock_topic_exchange)
       allow(mock_topic_exchange).to receive(:exchange).and_return(mock_topic_exchange_obj)
 
@@ -41,7 +46,8 @@ describe GovukSeedCrawler::Seeder do
     end
 
     it "closes the connection when done" do
-      allow(GovukSeedCrawler::GetUrls).to receive(:urls).and_return(urls)
+      allow(GovukSeedCrawler::GetUrls).to receive(:new).and_return(mock_get_urls)
+      allow(mock_get_urls).to receive(:urls).and_return(urls)
       allow(GovukSeedCrawler::TopicExchange).to receive(:new).and_return(mock_topic_exchange)
 
       expect(mock_topic_exchange).to receive(:close)
