@@ -27,7 +27,7 @@ module GovukSeedCrawler
     def parse(args)
       opt_parser = OptionParser.new do |opts|
         opts.banner = <<-EOS
-Usage: #{$0} site_root [options]
+Usage: #{$PROGRAM_NAME} site_root [options]
 
 Seeds an AMQP topic exchange with messages, each containing a URL, for the GOV.UK Crawler Worker
 to consume:
@@ -99,7 +99,7 @@ https://github.com/alphagov/govuk_crawler_worker
     end
 
     def exit_error_usage(error)
-      $stderr.puts "#{$0}: #{error}"
+      $stderr.puts "#{$PROGRAM_NAME}: #{error}"
       $stderr.puts @usage_text
       exit 2
     end
