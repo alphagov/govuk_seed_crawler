@@ -1,7 +1,7 @@
 module GovukSeedCrawler
   class Seeder
     def self.seed(options = {})
-      amqp_connect_options = self.extract_amqp_connect_options(options)
+      amqp_connect_options = extract_amqp_connect_options(options)
 
       urls = Indexer.new(options[:site_root]).urls
 
