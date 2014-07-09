@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'govuk_seed_crawler'
+
+GovukSeedCrawler::Cli.new(ARGV).run
