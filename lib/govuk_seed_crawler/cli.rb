@@ -4,12 +4,12 @@ module GovukSeedCrawler
   class Cli
     def initialize(argv_array)
       @options = {
-        :amqp_host => "localhost",
-        :amqp_port => "5672",
-        :amqp_username => "guest",
-        :amqp_password => "guest",
-        :amqp_exchange => "govuk_crawler_exchange",
-        :amqp_topic => "#",
+        :host => "localhost",
+        :port => "5672",
+        :username => "guest",
+        :password => "guest",
+        :exchange => "govuk_crawler_exchange",
+        :topic => "#",
         :quiet => false,
         :verbose => false,
       }
@@ -38,28 +38,28 @@ https://github.com/alphagov/govuk_crawler_worker
         opts.separator ""
         opts.separator "Options:"
 
-        opts.on("--host HOST", "AMQP host to publish to, defaults to '#{@options[:amqp_host]}'") do |host|
-          @options[:amqp_host] = host
+        opts.on("--host HOST", "AMQP host to publish to, defaults to '#{@options[:host]}'") do |host|
+          @options[:host] = host
         end
 
-        opts.on("--port PORT", "AMQP port, defaults to '#{@options[:amqp_port]}'") do |port|
-          @options[:amqp_port] = port
+        opts.on("--port PORT", "AMQP port, defaults to '#{@options[:port]}'") do |port|
+          @options[:port] = port
         end
 
-        opts.on("--username USERNAME", "AMQP username, defaults to '#{@options[:amqp_username]}'") do |username|
-          @options[:amqp_username] = username
+        opts.on("--username USERNAME", "AMQP username, defaults to '#{@options[:username]}'") do |username|
+          @options[:username] = username
         end
 
-        opts.on("--password PASSWORD", "AMQP password, defaults to '#{@options[:amqp_password]}'") do |password|
-          @options[:amqp_password] = password
+        opts.on("--password PASSWORD", "AMQP password, defaults to '#{@options[:password]}'") do |password|
+          @options[:password] = password
         end
 
-        opts.on("--exchange EXCHANGE", "AMQP exchange, defaults to '#{@options[:amqp_exchange]}'") do |exchange|
-          @options[:amqp_exchange] = exchange
+        opts.on("--exchange EXCHANGE", "AMQP exchange, defaults to '#{@options[:exchange]}'") do |exchange|
+          @options[:exchange] = exchange
         end
 
-        opts.on("--topic TOPIC", "AMQP topic, defaults to '#{@options[:amqp_topic]}'") do |topic|
-          @options[:amqp_topic] = topic
+        opts.on("--topic TOPIC", "AMQP topic, defaults to '#{@options[:topic]}'") do |topic|
+          @options[:topic] = topic
         end
 
         opts.on("--quiet", "Quiet output, defaults to '#{@options[:quiet]}'") do |_quiet|

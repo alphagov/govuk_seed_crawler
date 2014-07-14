@@ -5,8 +5,8 @@ describe GovukSeedCrawler::UrlPublisher do
     double(:mock_amqp_channel, :topic => mock_amqp_exchange)
   end
 
-  let(:mock_amqp_client) do
-    double(:mock_amqp_client, :channel => mock_amqp_channel, :close => true)
+  let(:mock_bunny) do
+    double(:mock_bunny, :start => true, :create_channel => mock_amqp_channel, :close => true)
   end
 
   let(:mock_amqp_exchange) do
@@ -21,20 +21,19 @@ describe GovukSeedCrawler::UrlPublisher do
     ]
   end
 
-  let(:amqp_connect_options) { {} }
   let(:exchange_name) { "publish" }
   let(:topic_name) { "#" }
 
-  before(:each) do
-    allow(GovukSeedCrawler::AmqpClient).to receive(:new).and_return(mock_amqp_client)
-    allow(mock_amqp_client).to receive(:exchange).and_return(mock_amqp_exchange)
-  end
-
   subject do
-    url_publisher = GovukSeedCrawler::UrlPublisher.new(amqp_connect_options)
+    url_publisher = GovukSeedCrawler::UrlPublisher.new({})
     url_publisher.exchange_name = exchange_name
     url_publisher.topic_name = topic_name
     url_publisher
+  end
+
+  before(:each) do
+    allow(Bunny).to receive(:new).and_return(mock_bunny)
+    allow(mock_bunny).to receive(:exchange).and_return(mock_amqp_exchange)
   end
 
   context "when calling UrlPublisher::publish_urls" do
@@ -75,7 +74,7 @@ describe GovukSeedCrawler::UrlPublisher do
     end
 
     it "closes the AMQP client connection when asked to close" do
-      expect(mock_amqp_client).to respond_to(:close)
+      expect(mock_bunny).to respond_to(:close)
       subject.publish_urls(urls)
     end
   end

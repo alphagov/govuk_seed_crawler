@@ -39,12 +39,12 @@ describe GovukSeedCrawler::Cli do
     context "when specifying AMQP connection parameters" do
       let (:options) do
         {
-          :amqp_host => "localhost",
-          :amqp_port => "5672",
-          :amqp_username => "guest",
-          :amqp_password => "guest",
-          :amqp_exchange => "govuk_crawler_exchange",
-          :amqp_topic => "#",
+          :host => "localhost",
+          :port => "5672",
+          :username => "guest",
+          :password => "guest",
+          :exchange => "govuk_crawler_exchange",
+          :topic => "#",
           :quiet => false,
           :verbose => false,
           :site_root => "https://example.com/",
@@ -55,7 +55,7 @@ describe GovukSeedCrawler::Cli do
         let(:args) { %w{https://example.com/ --host localhost} }
 
         it "should instantiate Seeder with the right options" do
-          options[:amqp_host] = 'localhost'
+          options[:host] = 'localhost'
 
           expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
           subject
@@ -66,7 +66,7 @@ describe GovukSeedCrawler::Cli do
         let(:args) { %w{https://example.com/ --port 9999} }
 
         it "should instantiate Seeder with the right options" do
-          options[:amqp_port] = '9999'
+          options[:port] = '9999'
 
           expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
           subject
@@ -77,7 +77,7 @@ describe GovukSeedCrawler::Cli do
         let(:args) { %w{https://example.com/ --username dirk} }
 
         it "should instantiate Seeder with the right options" do
-          options[:amqp_username] = 'dirk'
+          options[:username] = 'dirk'
 
           expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
           subject
@@ -88,7 +88,7 @@ describe GovukSeedCrawler::Cli do
         let(:args) { %w{https://example.com/ --password lolcats} }
 
         it "should instantiate Seeder with the right options" do
-          options[:amqp_password] = 'lolcats'
+          options[:password] = 'lolcats'
 
           expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
           subject
@@ -99,7 +99,7 @@ describe GovukSeedCrawler::Cli do
         let(:args) { %w{https://example.com/ --exchange #} }
 
         it "should instantiate Seeder with the right options" do
-          options[:amqp_exchange] = '#'
+          options[:exchange] = '#'
 
           expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
           subject
@@ -110,7 +110,7 @@ describe GovukSeedCrawler::Cli do
         let(:args) { %w{https://example.com/ --topic publish} }
 
         it "should instantiate Seeder with the right options" do
-          options[:amqp_topic] = 'publish'
+          options[:topic] = 'publish'
 
           expect(GovukSeedCrawler::Seeder).to receive(:seed).with(options)
           subject
