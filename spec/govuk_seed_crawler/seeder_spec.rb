@@ -1,7 +1,15 @@
 require 'spec_helper'
 
 describe GovukSeedCrawler::Seeder do
-  subject { GovukSeedCrawler::Seeder::seed({}) }
+  let(:exchange) { "seeder_test_exchange" }
+  let(:topic) { "#" }
+
+  let(:options) do
+    {
+      :amqp_exchange => exchange,
+      :amqp_topic => topic,
+    }
+  end
 
   let(:mock_get_urls) do
     double(:mock_get_urls, :urls => true)
@@ -24,13 +32,14 @@ describe GovukSeedCrawler::Seeder do
     ]
   end
 
-  before(:each) do
-      allow(GovukSeedCrawler::Indexer).to receive(:new).and_return(mock_get_urls)
-      allow(mock_get_urls).to receive(:urls).and_return(urls)
+  subject { GovukSeedCrawler::Seeder::seed(options) }
 
-      allow(GovukSeedCrawler::UrlPublisher).to receive(:new).and_return(mock_url_publisher)
-      allow(mock_url_publisher).to receive(:exchange_name=).and_return("topic-name")
-      allow(mock_url_publisher).to receive(:topic_name=).and_return("#")
+  before(:each) do
+    allow(GovukSeedCrawler::Indexer).to receive(:new).and_return(mock_get_urls)
+    allow(mock_get_urls).to receive(:urls).and_return(urls)
+
+    allow(GovukSeedCrawler::UrlPublisher).to receive(:new)
+      .with(options, exchange, topic).and_return(mock_url_publisher)
   end
 
   context "under normal usage" do

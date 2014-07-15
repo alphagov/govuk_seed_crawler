@@ -1,16 +1,17 @@
 module GovukSeedCrawler
   class UrlPublisher
-    attr_writer :exchange_name, :topic_name
+    def initialize(options, exchange, topic)
+      raise "Exchange not defined" if exchange.nil?
+      raise "Topic name not defined" if topic.nil?
 
-    def initialize(amqp_connect_options)
-      @amqp_client = AmqpClient.new(amqp_connect_options)
+      @amqp_client = AmqpClient.new(options)
       @amqp_channel = @amqp_client.channel
+      @exchange = exchange
+      @topic = topic
     end
 
     def publish_urls(urls)
       raise "AMQP channel not passed" unless @amqp_channel
-      raise "Exchange not defined" unless @exchange_name
-      raise "Topic name not defined" unless @topic_name
       raise "No URLs defined" if urls.empty?
 
       urls.each do |url|
@@ -28,8 +29,8 @@ module GovukSeedCrawler
     private
 
     def publish_to_exchange(body)
-        @topic_exchange = @amqp_channel.topic(@exchange_name, :durable => true)
-        @topic_exchange.publish(body, :routing_key => @topic_name)
+      @amqp_channel.topic(@exchange, :durable => true)
+        .publish(body, :routing_key => @topic)
     end
   end
 end
