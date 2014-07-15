@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe GovukSeedCrawler::UrlPublisher do
+  let(:exchange) { "publish" }
+  let(:topic) { "#" }
+
   let(:mock_amqp_channel) do
     double(:mock_amqp_channel, :topic => mock_amqp_exchange)
   end
@@ -21,19 +24,25 @@ describe GovukSeedCrawler::UrlPublisher do
     ]
   end
 
-  let(:exchange_name) { "publish" }
-  let(:topic_name) { "#" }
-
-  subject do
-    url_publisher = GovukSeedCrawler::UrlPublisher.new({})
-    url_publisher.exchange_name = exchange_name
-    url_publisher.topic_name = topic_name
-    url_publisher
-  end
+  subject { GovukSeedCrawler::UrlPublisher.new({}, exchange, topic) }
 
   before(:each) do
     allow(Bunny).to receive(:new).and_return(mock_bunny)
     allow(mock_bunny).to receive(:exchange).and_return(mock_amqp_exchange)
+  end
+
+  context "passing in params" do
+    it "raises an error when no exchange name is set" do
+      expect {
+        GovukSeedCrawler::UrlPublisher.new({}, nil, topic)
+      }.to raise_error("Exchange not defined")
+    end
+
+    it "raises an error when no topic name is set" do
+      expect {
+        GovukSeedCrawler::UrlPublisher.new({}, exchange, nil)
+      }.to raise_error("Topic name not defined")
+    end
   end
 
   context "when calling UrlPublisher::publish_urls" do
@@ -49,22 +58,6 @@ describe GovukSeedCrawler::UrlPublisher do
 
     it "raises an error no URLs are passed in" do
       expect{ subject.publish_urls({}) }.to raise_error("No URLs defined")
-    end
-
-    describe "when no exchange name is set" do
-      let(:exchange_name) { nil }
-
-      it "raises an error" do
-        expect{ subject.publish_urls(urls) }.to raise_error("Exchange not defined")
-      end
-    end
-
-    describe "when no topic name is set" do
-      let(:topic_name) { nil }
-
-      it "raises an error" do
-        expect{ subject.publish_urls(urls) }.to raise_error("Topic name not defined")
-      end
     end
   end
 
