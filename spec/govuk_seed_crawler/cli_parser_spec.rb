@@ -62,6 +62,7 @@ describe GovukSeedCrawler::CLIParser do
        "--password bar",
        "--exchange some_custom_exchange",
        "--topic some_custom_topic",
+       "--vhost a_vhost",
        "--verbose"
       ].join(" ").split(" ")
     }
@@ -77,7 +78,8 @@ describe GovukSeedCrawler::CLIParser do
         help: nil,
         quiet: false,
         verbose: true,
-        version: nil
+        version: nil,
+        vhost: "a_vhost"
       }
 
       expect(GovukSeedCrawler::CLIParser.new(arguments).parse.first.to_hash).to eq(overriden)

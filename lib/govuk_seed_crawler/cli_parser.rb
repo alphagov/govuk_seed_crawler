@@ -21,7 +21,8 @@ module GovukSeedCrawler
       :topic => "#",
       :username => "guest",
       :verbose => false,
-      :version => nil
+      :version => nil,
+      :vhost => "/"
     }.freeze
 
     def initialize(argv_array)
@@ -49,6 +50,8 @@ https://github.com/alphagov/govuk_crawler_worker
         on :password=, "AMQP password", default: DEFAULTS[:password]
         on :exchange=, "AMQP exchange", default: DEFAULTS[:exchange]
         on :topic=, "AMQP topic", default: DEFAULTS[:topic]
+        on :vhost=, "AMQP vhost", default: DEFAULTS[:vhost]
+
         on :quiet, "Quiet output", default: DEFAULTS[:quiet]
         on :verbose, "Verbose output", default: DEFAULTS[:verbose]
       end
