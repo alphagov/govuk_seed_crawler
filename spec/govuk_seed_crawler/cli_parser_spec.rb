@@ -1,13 +1,6 @@
 require 'spec_helper'
 
 describe GovukSeedCrawler::CLIParser do
-  def temp_stdout
-    $stdout = StringIO.new
-    yield $stdout.string
-  ensure
-    $stdout = STDOUT
-  end
-
   it "requires the site_root to be provided" do
     expect {
       GovukSeedCrawler::CLIParser.new([]).parse
@@ -25,6 +18,14 @@ describe GovukSeedCrawler::CLIParser do
     expect {
       GovukSeedCrawler::CLIParser.new(["a", "b"]).parse
     }.to raise_exception(GovukSeedCrawler::CLIException, "too many arguments provided")
+  end
+
+  it "should nest the help message in with any CLIExceptions we raise" do
+    expect {
+      GovukSeedCrawler::CLIParser.new(["a", "b"]).parse
+    }.to raise_exception(GovukSeedCrawler::CLIException) { |e|
+      expect(e.help).to include("Usage: ")
+    }
   end
 
   describe "catching STDOUT" do

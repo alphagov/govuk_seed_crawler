@@ -32,14 +32,14 @@ describe GovukSeedCrawler do
   let(:exchange) { "govuk_seed_crawler_integration_exchange" }
   let(:queue) { "govuk_seed_crawler_integration_queue" }
   let(:topic) { "#" }
+  let(:site_root) { "https://www.gov.uk/" }
   let(:options) {{
       :exchange => exchange,
-      :topic => topic,
-      :site_root => "https://www.gov.uk/",
+      :topic => topic
   }}
   let(:rabbitmq_client) { RabbitMQ::HTTP::Client.new("http://guest:guest@127.0.0.1:15672") }
 
-  subject { GovukSeedCrawler::Seeder::seed(options) }
+  subject { GovukSeedCrawler::Seeder::seed(site_root, options) }
 
   before(:each) do
     rabbitmq_client.declare_exchange(vhost, exchange, { :type => "topic" })

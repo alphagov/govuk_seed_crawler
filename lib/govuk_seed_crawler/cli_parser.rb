@@ -1,7 +1,14 @@
 require 'slop'
 
 module GovukSeedCrawler
-  class CLIException < StandardError; end
+  class CLIException < StandardError
+    attr_reader :help
+
+    def initialize(message, help)
+      super(message)
+      @help = help
+    end
+  end
 
   class CLIParser
     DEFAULTS = {
@@ -15,7 +22,7 @@ module GovukSeedCrawler
       :username => "guest",
       :verbose => false,
       :version => nil
-    }
+    }.freeze
 
     def initialize(argv_array)
       @argv_array = argv_array
@@ -47,8 +54,8 @@ https://github.com/alphagov/govuk_crawler_worker
       end
 
       if opts[:version].nil?
-        raise CLIException, "too many arguments provided" if @argv_array.size > 1
-        raise CLIException, "site_root must be provided" if @argv_array.size != 1
+        raise CLIException.new("too many arguments provided", opts.help) if @argv_array.size > 1
+        raise CLIException.new("site_root must be provided", opts.help) if @argv_array.size != 1
       end
 
       return opts, @argv_array.first

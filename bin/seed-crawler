@@ -2,4 +2,4 @@
 
 require 'govuk_seed_crawler'
 
-GovukSeedCrawler::Cli.new(ARGV).run
+GovukSeedCrawler::CLIRunner.new(ARGV).run
