@@ -1,5 +1,6 @@
 require 'govuk_seed_crawler/amqp_client'
 require 'govuk_seed_crawler/cli'
+require 'govuk_seed_crawler/cli_parser'
 require 'govuk_seed_crawler/indexer'
 require 'govuk_seed_crawler/seeder'
 require 'govuk_seed_crawler/version'
