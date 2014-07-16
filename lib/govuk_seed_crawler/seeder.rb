@@ -1,7 +1,7 @@
 module GovukSeedCrawler
   class Seeder
-    def self.seed(options = {})
-      urls = Indexer.new(options[:site_root]).urls
+    def self.seed(site_root, options = {})
+      urls = Indexer.new(site_root).urls
 
       amqp_client = AmqpClient.new(options)
 

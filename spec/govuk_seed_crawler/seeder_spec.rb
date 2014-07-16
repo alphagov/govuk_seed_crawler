@@ -3,6 +3,7 @@ require 'spec_helper'
 describe GovukSeedCrawler::Seeder do
   let(:exchange) { "seeder_test_exchange" }
   let(:topic) { "#" }
+  let(:root_url) { "https://www.example.com" }
 
   let(:options) {{
     :exchange => exchange,
@@ -20,10 +21,11 @@ describe GovukSeedCrawler::Seeder do
     ]
   end
 
-  subject { GovukSeedCrawler::Seeder::seed(options) }
+  subject { GovukSeedCrawler::Seeder::seed(root_url, options) }
 
   before(:each) do
     allow(GovukSeedCrawler::Indexer).to receive(:new)
+      .with(root_url)
       .and_return(mock_get_urls)
     allow(mock_get_urls).to receive(:urls).and_return(urls)
     allow(GovukSeedCrawler::AmqpClient).to receive(:new)
