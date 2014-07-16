@@ -1,3 +1,6 @@
+require 'govuk_seed_crawler'
+require 'webmock/rspec'
+
 RSpec.configure do |config|
   config.order = :random
 
@@ -26,4 +29,4 @@ RSpec.configure do |config|
   end
 end
 
-require 'govuk_seed_crawler'
+WebMock.disable_net_connect!(:allow_localhost => true)
