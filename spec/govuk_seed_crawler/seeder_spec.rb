@@ -5,8 +5,8 @@ describe GovukSeedCrawler::Seeder do
   let(:topic) { "#" }
 
   let(:options) {{
-    :amqp_exchange => exchange,
-    :amqp_topic => topic,
+    :exchange => exchange,
+    :topic => topic,
   }}
 
   let(:mock_get_urls) { double(:mock_get_urls, :urls => true) }

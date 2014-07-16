@@ -33,8 +33,8 @@ describe GovukSeedCrawler do
   let(:queue) { "govuk_seed_crawler_integration_queue" }
   let(:topic) { "#" }
   let(:options) {{
-      :amqp_exchange => exchange,
-      :amqp_topic => topic,
+      :exchange => exchange,
+      :topic => topic,
       :site_root => "https://www.gov.uk/",
   }}
   let(:rabbitmq_client) { RabbitMQ::HTTP::Client.new("http://guest:guest@127.0.0.1:15672") }
