@@ -10,7 +10,7 @@ describe GovukSeedCrawler::CLIParser do
   it "provides the defaults when just given the site_root" do
     options, site_root = GovukSeedCrawler::CLIParser.new(["https://www.example.com"]).parse
 
-    expect(options.to_hash).to eq(GovukSeedCrawler::CLIParser::DEFAULTS)
+    expect(options).to eq(GovukSeedCrawler::CLIParser::DEFAULTS)
     expect(site_root).to eq("https://www.example.com")
   end
 
@@ -31,7 +31,7 @@ describe GovukSeedCrawler::CLIParser do
   describe "catching STDOUT" do
     it "shows the help banner when provided -h" do
       # Get a valid options response as help closes early with SystemExit.
-      options, _ = GovukSeedCrawler::CLIParser.new(["http://www.foo.com/"]).parse
+      options = GovukSeedCrawler::CLIParser.new(["http://www.foo.com/"]).options
 
       temp_stdout do |caught_stdout|
         expect {
@@ -82,12 +82,36 @@ describe GovukSeedCrawler::CLIParser do
         vhost: "a_vhost"
       }
 
-      expect(GovukSeedCrawler::CLIParser.new(arguments).parse.first.to_hash).to eq(overriden)
+      expect(GovukSeedCrawler::CLIParser.new(arguments).parse.first).to eq(overriden)
     end
 
     it "should set the --quiet value" do
       options, _ = GovukSeedCrawler::CLIParser.new(["foo.com", "--quiet"]).parse
-      expect(options.to_hash).to eq(GovukSeedCrawler::CLIParser::DEFAULTS.merge(quiet: true))
+      expect(options).to eq(GovukSeedCrawler::CLIParser::DEFAULTS.merge(quiet: true))
+    end
+
+    describe "reading the AMQP password from an environment variable" do
+      def set_amqp_pass(password)
+        ENV[GovukSeedCrawler::CLIParser::ENV_AMQP_PASS_KEY] = password
+      end
+
+      after do
+        ENV[GovukSeedCrawler::CLIParser::ENV_AMQP_PASS_KEY] = nil
+      end
+
+      it "sets the password if set using an environment variable" do
+        set_amqp_pass("foobar")
+
+        expect(GovukSeedCrawler::CLIParser.new(["http://www.example.com"]).parse.first)
+          .to include(password: "foobar")
+      end
+
+      it "picks the environment variable over the parameter if both are set" do
+        set_amqp_pass("bar")
+
+        expect(GovukSeedCrawler::CLIParser.new(["http://www.example.com", "--password", "foo"]).parse.first)
+          .to include(password: "bar")
+      end
     end
   end
 end
