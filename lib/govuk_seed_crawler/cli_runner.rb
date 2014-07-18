@@ -9,11 +9,11 @@ module GovukSeedCrawler
         exit 2
       end
 
-      set_logging_level(@options.to_hash)
+      set_logging_level(@options)
     end
 
     def run
-      Seeder::seed(@site_root, @options.to_hash)
+      Seeder::seed(@site_root, @options)
     end
 
     private
