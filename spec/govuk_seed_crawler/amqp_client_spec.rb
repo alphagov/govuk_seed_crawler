@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe GovukSeedCrawler::AmqpClient do
+  let(:exchange) { "govuk_seed_crawler_spec_exchange" }
   let(:options) {{
     :host => ENV.fetch("AMQP_HOST", "localhost"),
     :user => "govuk_seed_crawler",
@@ -35,19 +36,19 @@ describe GovukSeedCrawler::AmqpClient do
 
       it "raises an exception if topic is nil" do
         expect {
-          subject.publish("amqp_client_test_exchange", nil, "some body")
+          subject.publish(exchange, nil, "some body")
         }.to raise_exception(RuntimeError, "Topic cannot be nil")
       end
 
       it "raises an exception if body is nil" do
         expect {
-          subject.publish("amqp_client_test_exchange", "#", nil)
+          subject.publish(exchange, "#", nil)
         }.to raise_exception(RuntimeError, "Message body cannot be nil")
       end
     end
 
     it "allows publishing against an exchange" do
-      expect(subject.publish("amqp_client_test_exchange", "#", "some body"))
+      expect(subject.publish(exchange, "#", "some body"))
         .to_not be_nil
     end
   end
