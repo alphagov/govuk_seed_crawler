@@ -33,7 +33,7 @@ describe GovukSeedCrawler do
   let(:topic) { "#" }
   let(:site_root) { "https://www.gov.uk/" }
   let(:options) {{
-      :host => "localhost",
+      :host => ENV.fetch("AMQP_HOST", "localhost"),
       :user => "govuk_seed_crawler",
       :pass => "govuk_seed_crawler",
       :exchange => exchange_name,
