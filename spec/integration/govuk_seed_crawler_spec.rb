@@ -1,6 +1,5 @@
 require 'json'
 require 'spec_helper'
-require 'rabbitmq/http/client'
 
 describe GovukSeedCrawler do
   def stub_api_artefacts(count)
@@ -29,43 +28,39 @@ describe GovukSeedCrawler do
   end
 
   let(:vhost) { "/" }
-  let(:exchange) { "govuk_seed_crawler_integration_exchange" }
-  let(:queue) { "govuk_seed_crawler_integration_queue" }
+  let(:exchange_name) { "govuk_seed_crawler_integration_exchange" }
+  let(:queue_name) { "govuk_seed_crawler_integration_queue" }
   let(:topic) { "#" }
   let(:site_root) { "https://www.gov.uk/" }
   let(:options) {{
-      :exchange => exchange,
+      :host => "localhost",
+      :username => "guest",
+      :password => "guest",
+      :exchange => exchange_name,
       :topic => topic
   }}
-  let(:rabbitmq_client) { RabbitMQ::HTTP::Client.new("http://guest:guest@127.0.0.1:15672") }
+  let(:rabbitmq_client) { GovukSeedCrawler::AmqpClient.new(options) }
 
   subject { GovukSeedCrawler::Seeder::seed(site_root, options) }
 
   before(:each) do
-    rabbitmq_client.declare_exchange(vhost, exchange, { :type => "topic" })
-    rabbitmq_client.declare_queue(vhost, queue, {})
-    rabbitmq_client.bind_queue(vhost, queue, exchange, "#")
+    @exchange = rabbitmq_client.channel.topic(exchange_name, :durable => true)
+    @queue = rabbitmq_client.channel.queue(queue_name)
+    @queue.bind(@exchange, :routing_key => topic)
   end
 
   after(:each) do
-    rabbitmq_client.delete_queue_binding(vhost, queue, exchange, "#")
-    rabbitmq_client.delete_exchange(vhost, exchange)
-    rabbitmq_client.delete_queue(vhost, queue)
+    @queue.unbind(@exchange)
+    @queue.delete
+    @exchange.delete
+    rabbitmq_client.close
   end
 
   it "publishes URLs it finds to an AMQP topic exchange" do
     stub_api_artefacts(10)
-
     subject
 
-    # Give the management API time to recognise the messages we've
-    # just published.
-    sleep(1)
-
-    messages = rabbitmq_client.get_messages(
-      vhost, queue, :count => 10000, :requeue => false, :encoding => "auto")
-
     # There's an extra 5 URLs from the Indexer class that are hard-coded.
-    expect(messages.size).to be(15)
+    expect(@queue.message_count).to be(15)
   end
 end
