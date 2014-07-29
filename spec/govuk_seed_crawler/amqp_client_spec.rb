@@ -1,7 +1,12 @@
 require 'spec_helper'
 
 describe GovukSeedCrawler::AmqpClient do
-  subject { GovukSeedCrawler::AmqpClient.new }
+  let(:options) {{
+    :host => ENV.fetch("AMQP_HOST", "localhost"),
+    :user => "govuk_seed_crawler",
+    :pass => "govuk_seed_crawler",
+  }}
+  subject { GovukSeedCrawler::AmqpClient.new(options) }
 
   it "responds to #channel" do
     expect(subject).to respond_to(:channel)
