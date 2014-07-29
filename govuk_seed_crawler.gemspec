@@ -24,7 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "gemfury", "~> 0.4.24.beta1"
   spec.add_development_dependency "gem_publisher", "~> 1.3"
   spec.add_development_dependency "pry"
-  spec.add_development_dependency "rabbitmq_http_api_client", "~> 1.3"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rspec-mocks", "~> 3.0"
