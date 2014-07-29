@@ -34,8 +34,8 @@ describe GovukSeedCrawler do
   let(:site_root) { "https://www.gov.uk/" }
   let(:options) {{
       :host => "localhost",
-      :username => "guest",
-      :password => "guest",
+      :user => "govuk_seed_crawler",
+      :pass => "govuk_seed_crawler",
       :exchange => exchange_name,
       :topic => topic
   }}
