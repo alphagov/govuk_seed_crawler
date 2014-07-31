@@ -1,6 +1,22 @@
 require 'spec_helper'
 
 describe GovukSeedCrawler::CLIRunner do
+  describe "printing the version" do
+    it "should not try to connect to an AMQP server" do
+      expect(Bunny).not_to receive(:new)
+
+      temp_stdout do |caught_stdout|
+        expect {
+          GovukSeedCrawler::CLIRunner.new(["--version"]).run
+        }.to raise_exception(SystemExit) { |exit|
+          expect(exit.status).to eq(0)
+        }
+
+        expect(caught_stdout.strip).to eq("Version: #{GovukSeedCrawler::VERSION}")
+      end
+    end
+  end
+
   describe "catching any CLIException objects and exiting with a status 1" do
     it "prints to STDOUT for too many arguments" do
       temp_stdout do |caught_stdout|

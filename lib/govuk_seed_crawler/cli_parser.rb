@@ -48,6 +48,7 @@ are set, the environment variable will take higher precedent.
 
         on :version, "Display version and exit" do
           puts "Version: #{GovukSeedCrawler::VERSION}"
+          exit 0
         end
 
         on :host=, "AMQP host to publish to", default: DEFAULTS[:host]
