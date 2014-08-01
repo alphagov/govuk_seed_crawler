@@ -46,7 +46,12 @@ describe GovukSeedCrawler::CLIParser do
 
     it "should show the version number and exit" do
       temp_stdout do |caught_stdout|
-        _, _ = GovukSeedCrawler::CLIParser.new(["--version"]).parse
+        expect {
+          _, _ = GovukSeedCrawler::CLIParser.new(["--version"]).parse
+        }.to raise_exception(SystemExit) { |e|
+          expect(e.status).to eq(0)
+        }
+
         expect(caught_stdout.strip).to eq("Version: #{GovukSeedCrawler::VERSION}")
       end
     end
