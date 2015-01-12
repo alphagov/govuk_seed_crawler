@@ -4,8 +4,8 @@ describe GovukSeedCrawler::AmqpClient do
   let(:exchange) { "govuk_seed_crawler_spec_exchange" }
   let(:options) {{
     :host => ENV.fetch("AMQP_HOST", "localhost"),
-    :user => "govuk_seed_crawler",
-    :pass => "govuk_seed_crawler",
+    :user => ENV.fetch("AMQP_USER", "govuk_seed_crawler"),
+    :pass => ENV.fetch("AMQP_PASS", "govuk_seed_crawler"),
   }}
   subject { GovukSeedCrawler::AmqpClient.new(options) }
 
