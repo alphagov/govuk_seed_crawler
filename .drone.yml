@@ -1,6 +1,9 @@
 image: ruby2.0.0
 services:
   - rabbitmq
+env:
+  - AMQP_USER=guest
+  - AMQP_PASS=guest
 script:
   - rm -f Gemfile.lock
   - bundle install
