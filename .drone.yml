@@ -1,0 +1,6 @@
+image: ruby2.0.0
+script:
+  - rm -f Gemfile.lock
+  - bundle install
+  - bundle exec rake
+  - bundle exec rake integration
