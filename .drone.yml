@@ -9,3 +9,7 @@ script:
   - bundle install
   - bundle exec rake
   - bundle exec rake integration
+notify:
+  email:
+    on_success: blame
+    on_failure: blame
