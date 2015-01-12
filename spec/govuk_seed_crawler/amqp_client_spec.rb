@@ -31,7 +31,7 @@ describe GovukSeedCrawler::AmqpClient do
       it "raises an exception if exchange is nil" do
         expect {
           subject.publish(nil, "#", "some body")
-        }.to raise_exception(RuntimeError, "FAIL Exchange cannot be nil")
+        }.to raise_exception(RuntimeError, "Exchange cannot be nil")
       end
 
       it "raises an exception if topic is nil" do
