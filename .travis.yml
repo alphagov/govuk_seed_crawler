@@ -2,8 +2,7 @@ language: ruby
 services:
   - rabbitmq
 env:
-  - AMQP_USER=guest
-  - AMQP_PASS=geust
+  - AMQP_USER=guest AMQP_PASS=guest
 script:
   - rm -f Gemfile.lock
   - bundle install
