@@ -8,4 +8,4 @@ script:
   - bundle install
   - bundle exec rake
   - bundle exec rake integration
-  - echo 'done!'
+  - echo 'done!!!'
