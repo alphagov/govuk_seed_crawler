@@ -1,0 +1,11 @@
+language: ruby
+services:
+  - rabbitmq
+env:
+  - AMQP_USER=guest
+  - AMQP_PASS=geust
+script:
+  - rm -f Gemfile.lock
+  - bundle install
+  - bundle exec rake
+  - bundle exec rake integration
