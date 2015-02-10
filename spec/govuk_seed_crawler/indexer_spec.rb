@@ -14,7 +14,7 @@ describe GovukSeedCrawler::Indexer do
     end
 
     it "calls GovukMirrorer::Indexer with the site root" do
-      expect(GovukMirrorer::Indexer).to receive(:new).with('https://example.com.foobar/').and_return(mock_indexer)
+      expect(GovukMirrorer::Indexer).to receive(:new).with('https://example.com.foobar.foo/').and_return(mock_indexer)
       subject
     end
   end
