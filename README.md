@@ -39,3 +39,4 @@ bundle exec seed-crawler --help
 5. Create new Pull Request
 
 Test 1
+Test 2
