@@ -11,8 +11,8 @@ end
 
 task :default => :spec
 
-desc "Publish gem to GemFury"
+desc "Publish gem to RubyGems"
 task :publish_gem do |t|
-  gem = GemPublisher.publish_if_updated("govuk_seed_crawler.gemspec", :gemfury, :as => "govuk")
+  gem = GemPublisher.publish_if_updated("govuk_seed_crawler.gemspec")
   puts "Published #{gem}" if gem
 end
