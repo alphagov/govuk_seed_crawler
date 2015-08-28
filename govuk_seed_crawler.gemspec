@@ -21,7 +21,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "govuk_mirrorer", "~> 1.3.1"
   spec.add_runtime_dependency "slop", "~> 3.6.0"
 
-  spec.add_development_dependency "gemfury", "~> 0.4.24.beta1"
   spec.add_development_dependency "gem_publisher", "~> 1.3"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "rake"
