@@ -6,7 +6,7 @@ set -e
 
 pip install -q ghtools
 
-REPO="gds:gds/govuk_seed_crawler"
+REPO="alphagov/govuk_seed_crawler"
 gh-status "$REPO" "$GIT_COMMIT" pending -d "\"Build #${BUILD_NUMBER} is running on Jenkins\"" -u "$BUILD_URL" >/dev/null
 
 if ./jenkins-tests.sh; then
