@@ -1,5 +1,4 @@
-require 'govuk_mirrorer/indexer'
-require 'govuk_mirrorer/statsd'
+require 'sitemap-parser'
 
 module GovukSeedCrawler
   class Indexer
@@ -9,8 +8,9 @@ module GovukSeedCrawler
       raise "No site_root defined" unless site_root
 
       GovukSeedCrawler.logger.info("Retrieving list of URLs for #{site_root}")
-      indexer = GovukMirrorer::Indexer.new(site_root)
-      @urls = indexer.all_start_urls
+
+      sitemap = SitemapParser.new("#{site_root}/sitemap.xml", {recurse: true})
+      @urls = sitemap.to_a
 
       GovukSeedCrawler.logger.info("Found #{@urls.count} URLs")
     end

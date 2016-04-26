@@ -2,36 +2,30 @@ require 'json'
 require 'spec_helper'
 
 describe GovukSeedCrawler do
-  def stub_api_artefacts(count)
-    item = {
-      "id" => "https://www.gov.uk/api/government%2Fnews%2Ffaster-review-of-support-for-renewable-electricity-to-provide-investor-certainty.json",
-      "web_url" => "https://www.gov.uk/government/news/faster-review-of-support-for-renewable-electricity-to-provide-investor-certainty",
-      "title" => "Faster review of support for Renewable electricity to provide investor certainty",
-      "format" => "announcement"
-    }
-    results = count.times.collect { item }
-    response = {
-      "_response_info" => {
-        "status" => "ok",
-        "links" => []
-      },
-      "total" => results.size,
-      "start_index" => 1,
-      "page_size" => 100,
-      "current_page" => 1,
-      "pages" => 1,
-      "results" => results
+  def stub_sitemap
+    sitemap = %{<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.gov.uk/</loc>
+  </url>
+  <url>
+    <loc>https://www.gov.uk/register-to-vote</loc>
+  </url>
+  <url>
+    <loc>https://www.gov.uk/help</loc>
+  </url>
+</urlset>
     }
 
-    stub_request(:get, "https://www.gov.uk//api/artefacts.json").
-         to_return(:status => 200, :body => response.to_json, :headers => {})
+    stub_request(:get, "https://www.gov.uk/sitemap.xml").
+         to_return(:status => 200, :body => sitemap, :headers => {})
   end
 
   let(:vhost) { "/" }
   let(:exchange_name) { "govuk_seed_crawler_integration_exchange" }
   let(:queue_name) { "govuk_seed_crawler_integration_queue" }
   let(:topic) { "#" }
-  let(:site_root) { "https://www.gov.uk/" }
+  let(:site_root) { "https://www.gov.uk" }
   let(:options) {{
       :host => ENV.fetch("AMQP_HOST", "localhost"),
       :user => ENV.fetch("AMQP_USER", "govuk_seed_crawler"),
@@ -57,10 +51,9 @@ describe GovukSeedCrawler do
   end
 
   it "publishes URLs it finds to an AMQP topic exchange" do
-    stub_api_artefacts(10)
+    stub_sitemap
     subject
 
-    # There's an extra 5 URLs from the Indexer class that are hard-coded.
-    expect(@queue.message_count).to be(15)
+    expect(@queue.message_count).to be(3)
   end
 end
