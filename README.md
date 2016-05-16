@@ -1,10 +1,7 @@
 # GOV.UK: Seed the Crawler
 
-This gem retrieves a list of seed URLs from the GOV.UK content API and adds them to RabbitMQ
+This gem retrieves a list of seed URLs from the GOV.UK sitemap and adds them to RabbitMQ
 so that the [crawler](https://github.com/alphagov/govuk_crawler_worker) can consume them.
-
-It depends on the `govuk_mirrorer` gem for parsing the response from the content API.
-Once this dependency is removed the `govuk_mirrorer` gem can be archived.
 
 ## Installation
 
