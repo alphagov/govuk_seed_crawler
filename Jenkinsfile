@@ -21,16 +21,7 @@ node {
     }
 
     stage('Bundle install') {
-
-      echo 'Bundling'
-      govuk.withStatsdTiming("bundle") {
-        lock ("bundle_install-$NODE_NAME") {
-          // This is a copy of the bundleGem method in the govuk library
-          // but we change the `--path` to be in the work directory so that
-          // we don't have problems trying to use too-new versions of gems.
-          sh("bundle install --path bundles")
-        }
-      }
+      govuk.bundleGem()
     }
 
     stage('Spec tests') {
