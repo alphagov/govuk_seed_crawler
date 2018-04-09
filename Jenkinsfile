@@ -1,10 +1,11 @@
 #!/usr/bin/env groovy
 
+library("govuk")
+
 node {
   try {
     // This doesn't use the buildProject as this project doesn't conform to
     // required norms (e.g. running in Ruby 1.9, non-standard tests).
-    def govuk = load '/var/lib/jenkins/groovy_scripts/govuk_jenkinslib.groovy'
 
     repoName = JOB_NAME.split('/')[0]
 
