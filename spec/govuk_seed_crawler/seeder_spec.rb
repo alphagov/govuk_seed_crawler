@@ -23,29 +23,49 @@ describe GovukSeedCrawler::Seeder do
 
   subject { GovukSeedCrawler::Seeder::seed(root_url, options) }
 
-  before(:each) do
-    allow(GovukSeedCrawler::Indexer).to receive(:new)
-      .with(root_url)
-      .and_return(mock_get_urls)
-    allow(mock_get_urls).to receive(:urls).and_return(urls)
-    allow(GovukSeedCrawler::AmqpClient).to receive(:new)
-      .with(options).and_return(mock_amqp_client)
-  end
+  describe ":only_this_page = true" do
+    let(:options) {{
+      :exchange => exchange,
+      :topic => topic,
+      :only_this_page => true
+    }}
 
-  context "under normal usage" do
-    it "publishes urls to the queue" do
-      urls.each do |url|
-        expect(mock_amqp_client).to receive(:publish)
-          .with(exchange, topic, url)
-      end
-
-      subject
+    before(:each) do
+      allow(GovukSeedCrawler::AmqpClient).to receive(:new)
+        .with(options).and_return(mock_amqp_client)
     end
 
-    it "closes the connection when done" do
-      allow(mock_amqp_client).to receive(:publish)
-      expect(mock_amqp_client).to receive(:close)
-      subject
+    it "only seeds the root URL" do
+        expect(mock_amqp_client).to receive(:publish).with(exchange, topic, root_url)
+        subject
+    end
+  end
+
+  describe ":only_this_page = false" do
+    before(:each) do
+      allow(GovukSeedCrawler::Indexer).to receive(:new)
+        .with(root_url)
+        .and_return(mock_get_urls)
+      allow(mock_get_urls).to receive(:urls).and_return(urls)
+      allow(GovukSeedCrawler::AmqpClient).to receive(:new)
+        .with(options).and_return(mock_amqp_client)
+    end
+
+    context "under normal usage" do
+      it "publishes urls to the queue" do
+        urls.each do |url|
+          expect(mock_amqp_client).to receive(:publish)
+            .with(exchange, topic, url)
+        end
+
+        subject
+      end
+
+      it "closes the connection when done" do
+        allow(mock_amqp_client).to receive(:publish)
+        expect(mock_amqp_client).to receive(:close)
+        subject
+      end
     end
   end
 end

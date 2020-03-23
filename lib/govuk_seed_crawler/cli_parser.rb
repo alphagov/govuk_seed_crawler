@@ -22,7 +22,8 @@ module GovukSeedCrawler
       :username => "guest",
       :verbose => false,
       :version => nil,
-      :vhost => "/"
+      :vhost => "/",
+      :only_this_page => false,
     }.freeze
 
     ENV_AMQP_PASS_KEY = "GOVUK_CRAWLER_AMQP_PASS".freeze
@@ -58,6 +59,8 @@ are set, the environment variable will take higher precedent.
         on :exchange=, "AMQP exchange", default: DEFAULTS[:exchange]
         on :topic=, "AMQP topic", default: DEFAULTS[:topic]
         on :vhost=, "AMQP vhost", default: DEFAULTS[:vhost]
+
+        on :only_this_page, "Seed the given URL, don't look for a sitemap", default: DEFAULTS[:only_this_page]
 
         on :quiet, "Quiet output", default: DEFAULTS[:quiet]
         on :verbose, "Verbose output", default: DEFAULTS[:verbose]

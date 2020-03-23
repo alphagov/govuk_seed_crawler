@@ -68,6 +68,7 @@ describe GovukSeedCrawler::CLIParser do
        "--exchange some_custom_exchange",
        "--topic some_custom_topic",
        "--vhost a_vhost",
+       "--only-this-page",
        "--verbose"
       ].join(" ").split(" ")
     }
@@ -83,6 +84,7 @@ describe GovukSeedCrawler::CLIParser do
         help: nil,
         quiet: false,
         verbose: true,
+        only_this_page: true,
         version: nil,
         vhost: "a_vhost"
       }
@@ -93,6 +95,11 @@ describe GovukSeedCrawler::CLIParser do
     it "should set the --quiet value" do
       options, _ = GovukSeedCrawler::CLIParser.new(["foo.com", "--quiet"]).parse
       expect(options).to eq(GovukSeedCrawler::CLIParser::DEFAULTS.merge(quiet: true))
+    end
+
+    it "should set the --only-this-page value" do
+      options, _ = GovukSeedCrawler::CLIParser.new(["foo.com", "--only-this-page"]).parse
+      expect(options).to eq(GovukSeedCrawler::CLIParser::DEFAULTS.merge(only_this_page: true))
     end
 
     describe "reading the AMQP password from an environment variable" do
