@@ -35,7 +35,7 @@ node {
 
     if (env.BRANCH_NAME == 'master') {
       stage('Publish Gem to Rubygems') {
-        govuk.publishGem(repoName, 'master')
+        govuk.publishGem(repoName, repoName, 'master')
       }
     }
   } catch (e) {
