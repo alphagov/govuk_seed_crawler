@@ -19,7 +19,6 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "bunny", "~> 1.3"
   spec.add_runtime_dependency "crack", "0.4.4"
-  spec.add_runtime_dependency "ffi", "1.10.0"
   spec.add_runtime_dependency "nokogiri", "~> 1.6.0"
   # Something, somewhere, sometimes requires public_suffix.
   # public_suffix > 1.5 requires ruby > 2.
