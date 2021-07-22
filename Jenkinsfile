@@ -18,7 +18,7 @@ node {
     }
 
     stage('Configure environment') {
-      govuk.setEnvar('RBENV_VERSION', '1.9.3-p550')
+      govuk.setEnvar('RBENV_VERSION', '2.6.3')
     }
 
     stage('Bundle install') {
