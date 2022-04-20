@@ -33,9 +33,9 @@ node {
       govuk.runRakeTask('integration')
     }
 
-    if (env.BRANCH_NAME == 'master') {
+    if (env.BRANCH_NAME == 'main') {
       stage('Publish Gem to Rubygems') {
-        govuk.publishGem(repoName, repoName, 'master')
+        govuk.publishGem(repoName, repoName, 'main')
       }
     }
   } catch (e) {
