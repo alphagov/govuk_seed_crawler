@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "slop", "~> 3.6.0"
 
   spec.add_development_dependency "pry"
-  spec.add_development_dependency "rake", "~> 0.9"
+  spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rspec-mocks", "~> 3.0"
   spec.add_development_dependency "webmock", "~> 3.13.0"
