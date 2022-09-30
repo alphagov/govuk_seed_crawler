@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   # public_suffix > 1.5 requires ruby > 2.
   spec.add_runtime_dependency "public_suffix", ">= 1.4.6", "< 5.1.0"
   spec.add_runtime_dependency "sitemap-parser", ">= 0.3", "< 0.6"
-  spec.add_runtime_dependency "slop", "~> 3.6.0"
+  spec.add_runtime_dependency "slop", ">= 3.6", "< 4.10"
 
   spec.add_development_dependency "pry"
   spec.add_development_dependency "rake", "~> 13.0"
