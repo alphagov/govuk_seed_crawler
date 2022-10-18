@@ -28,24 +28,22 @@ describe GovukSeedCrawler::AmqpClient do
   end
 
   describe "#publish" do
-    context "error handling" do
-      it "raises an exception if exchange is nil" do
-        expect {
-          described_class.new(options).publish(nil, "#", "some body")
-        }.to raise_exception(RuntimeError, "Exchange cannot be nil")
-      end
+    it "raises an exception if exchange is nil" do
+      expect {
+        described_class.new(options).publish(nil, "#", "some body")
+      }.to raise_exception(RuntimeError, "Exchange cannot be nil")
+    end
 
-      it "raises an exception if topic is nil" do
-        expect {
-          described_class.new(options).publish(exchange, nil, "some body")
-        }.to raise_exception(RuntimeError, "Topic cannot be nil")
-      end
+    it "raises an exception if topic is nil" do
+      expect {
+        described_class.new(options).publish(exchange, nil, "some body")
+      }.to raise_exception(RuntimeError, "Topic cannot be nil")
+    end
 
-      it "raises an exception if body is nil" do
-        expect {
-          described_class.new(options).publish(exchange, "#", nil)
-        }.to raise_exception(RuntimeError, "Message body cannot be nil")
-      end
+    it "raises an exception if body is nil" do
+      expect {
+        described_class.new(options).publish(exchange, "#", nil)
+      }.to raise_exception(RuntimeError, "Message body cannot be nil")
     end
 
     it "allows publishing against an exchange" do

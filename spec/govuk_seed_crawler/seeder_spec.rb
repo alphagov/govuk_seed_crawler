@@ -32,20 +32,18 @@ describe GovukSeedCrawler::Seeder do
       .with(options).and_return(mock_amqp_client)
   end
 
-  context "under normal usage" do
-    it "publishes urls to the queue" do
-      urls.each do |url|
-        expect(mock_amqp_client).to receive(:publish)
-          .with(exchange, topic, url)
-      end
-
-      described_class.seed(root_url, options)
+  it "publishes urls to the queue" do
+    urls.each do |url|
+      expect(mock_amqp_client).to receive(:publish)
+        .with(exchange, topic, url)
     end
 
-    it "closes the connection when done" do
-      allow(mock_amqp_client).to receive(:publish)
-      expect(mock_amqp_client).to receive(:close)
-      described_class.seed(root_url, options)
-    end
+    described_class.seed(root_url, options)
+  end
+
+  it "closes the connection when done" do
+    allow(mock_amqp_client).to receive(:publish)
+    expect(mock_amqp_client).to receive(:close)
+    described_class.seed(root_url, options)
   end
 end
