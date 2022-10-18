@@ -1,8 +1,6 @@
 require "spec_helper"
 
 describe GovukSeedCrawler::Seeder do
-  subject { described_class.seed(root_url, options) }
-
   let(:exchange) { "seeder_test_exchange" }
   let(:topic) { "#" }
   let(:root_url) { "https://www.example.com" }
@@ -41,13 +39,13 @@ describe GovukSeedCrawler::Seeder do
           .with(exchange, topic, url)
       end
 
-      subject
+      described_class.seed(root_url, options)
     end
 
     it "closes the connection when done" do
       allow(mock_amqp_client).to receive(:publish)
       expect(mock_amqp_client).to receive(:close)
-      subject
+      described_class.seed(root_url, options)
     end
   end
 end
