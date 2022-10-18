@@ -1,6 +1,8 @@
 require 'govuk_seed_crawler'
 require 'webmock/rspec'
 
+WebMock.disable_net_connect!
+
 RSpec.configure do |config|
   config.order = :random
 
@@ -28,5 +30,3 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 end
-
-WebMock.disable_net_connect!
