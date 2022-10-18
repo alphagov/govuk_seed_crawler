@@ -33,7 +33,7 @@ module GovukSeedCrawler
 
     def options
       Slop.parse!(@argv_array, help: true) do
-        banner <<~EOS
+        banner <<~HELP
           Usage: #{$PROGRAM_NAME} site_root [options]
 
           Seeds an AMQP topic exchange with messages, each containing a URL, for the GOV.UK Crawler Worker
@@ -44,7 +44,7 @@ module GovukSeedCrawler
           The AMQP password can also be set as an environment variable and will be read from
           `#{ENV_AMQP_PASS_KEY}`. If both the environment variable and command-line option for password
           are set, the environment variable will take higher precedent.
-        EOS
+        HELP
 
         on :version, "Display version and exit" do
           puts "Version: #{GovukSeedCrawler::VERSION}"
