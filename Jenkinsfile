@@ -17,10 +17,6 @@ node {
       govuk.cleanupGit()
     }
 
-    stage('Configure environment') {
-      govuk.setEnvar('RBENV_VERSION', '2.6.3')
-    }
-
     stage('Bundle install') {
       govuk.bundleGem()
     }
