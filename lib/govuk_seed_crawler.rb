@@ -6,12 +6,16 @@ require "govuk_seed_crawler/seeder"
 require "govuk_seed_crawler/version"
 
 module GovukSeedCrawler
-  def self.logger
-    unless @logger
-      @logger = Logger.new($stdout)
-      @logger.level = Logger::INFO
-    end
+  class << self
+    attr_writer :logger
 
-    @logger
+    def logger
+      unless @logger
+        @logger = Logger.new($stdout)
+        @logger.level = Logger::INFO
+      end
+
+      @logger
+    end
   end
 end

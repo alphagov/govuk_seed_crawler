@@ -38,12 +38,14 @@ describe GovukSeedCrawler::Seeder do
         .with(exchange, topic, url)
     end
 
-    described_class.seed(root_url, options)
+    expect { described_class.seed(root_url, options) }
+      .to output.to_stdout
   end
 
   it "closes the connection when done" do
     allow(mock_amqp_client).to receive(:publish)
     expect(mock_amqp_client).to receive(:close)
-    described_class.seed(root_url, options)
+    expect { described_class.seed(root_url, options) }
+      .to output.to_stdout
   end
 end

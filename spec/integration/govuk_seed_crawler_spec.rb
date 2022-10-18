@@ -52,7 +52,8 @@ describe GovukSeedCrawler do
 
   it "publishes URLs it finds to an AMQP topic exchange" do
     stub_sitemap
-    GovukSeedCrawler::Seeder.seed(site_root, options)
+    expect { GovukSeedCrawler::Seeder.seed(site_root, options) }
+      .to output.to_stdout
 
     expect(queue.message_count).to be(3)
   end
