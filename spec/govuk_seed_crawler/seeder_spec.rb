@@ -1,29 +1,31 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe GovukSeedCrawler::Seeder do
+  subject { described_class.seed(root_url, options) }
+
   let(:exchange) { "seeder_test_exchange" }
   let(:topic) { "#" }
   let(:root_url) { "https://www.example.com" }
 
-  let(:options) {{
-    :exchange => exchange,
-    :topic => topic,
-  }}
+  let(:options) do
+    {
+      exchange: exchange,
+      topic: topic,
+    }
+  end
 
-  let(:mock_get_urls) { double(:mock_get_urls, :urls => true) }
-  let(:mock_amqp_client) { double(:mock_amqp_client, :close => true) }
+  let(:mock_get_urls) { double(:mock_get_urls, urls: true) }
+  let(:mock_amqp_client) { double(:mock_amqp_client, close: true) }
 
   let(:urls) do
     [
-     "https://example.com/foo",
-     "https://example.com/bar",
-     "https://example.com/baz",
+      "https://example.com/foo",
+      "https://example.com/bar",
+      "https://example.com/baz",
     ]
   end
 
-  subject { GovukSeedCrawler::Seeder::seed(root_url, options) }
-
-  before(:each) do
+  before do
     allow(GovukSeedCrawler::Indexer).to receive(:new)
       .with(root_url)
       .and_return(mock_get_urls)

@@ -1,5 +1,5 @@
-require 'govuk_seed_crawler'
-require 'webmock/rspec'
+require "govuk_seed_crawler"
+require "webmock/rspec"
 
 WebMock.disable_net_connect!
 

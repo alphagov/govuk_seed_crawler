@@ -1,28 +1,28 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe GovukSeedCrawler::CLIParser do
   it "requires the site_root to be provided" do
     expect {
-      GovukSeedCrawler::CLIParser.new([]).parse
+      described_class.new([]).parse
     }.to raise_exception(GovukSeedCrawler::CLIException, "site_root must be provided")
   end
 
   it "provides the defaults when just given the site_root" do
-    options, site_root = GovukSeedCrawler::CLIParser.new(["https://www.example.com"]).parse
+    options, site_root = described_class.new(["https://www.example.com"]).parse
 
     expect(options).to eq(GovukSeedCrawler::CLIParser::DEFAULTS)
     expect(site_root).to eq("https://www.example.com")
   end
 
-  it "should tell us when we've given too many arguments" do
+  it "tells us when we've given too many arguments" do
     expect {
-      GovukSeedCrawler::CLIParser.new(["a", "b"]).parse
+      described_class.new(%w[a b]).parse
     }.to raise_exception(GovukSeedCrawler::CLIException, "too many arguments provided")
   end
 
-  it "should nest the help message in with any CLIExceptions we raise" do
+  it "nests the help message in with any CLIExceptions we raise" do
     expect {
-      GovukSeedCrawler::CLIParser.new(["a", "b"]).parse
+      described_class.new(%w[a b]).parse
     }.to raise_exception(GovukSeedCrawler::CLIException) { |e|
       expect(e.help).to include("Usage: ")
     }
@@ -31,36 +31,36 @@ describe GovukSeedCrawler::CLIParser do
   describe "catching STDOUT" do
     it "shows the help banner when provided -h" do
       # Get a valid options response as help closes early with SystemExit.
-      options = GovukSeedCrawler::CLIParser.new(["http://www.foo.com/"]).options
+      options = described_class.new(["http://www.foo.com/"]).options
 
-      expect { GovukSeedCrawler::CLIParser.new(["-h"]).parse }
-        .to output(options.help + "\n").to_stdout
+      expect { described_class.new(["-h"]).parse }
+        .to output("#{options.help}\n").to_stdout
         .and raise_exception(SystemExit) { |e| expect(e.status).to eq(0) }
     end
 
-    it "should show the version number and exit" do
-      expect { GovukSeedCrawler::CLIParser.new(["--version"]).parse }
+    it "shows the version number and exit" do
+      expect { described_class.new(["--version"]).parse }
         .to output("Version: #{GovukSeedCrawler::VERSION}\n").to_stdout
         .and raise_exception(SystemExit) { |e| expect(e.status).to eq(0) }
     end
   end
 
   describe "passing in valid arguments" do
-    let(:arguments) {
+    let(:arguments) do
       [
-       "https://www.override.com/",
-       "--host rabbitmq.some.custom.vhost",
-       "--port 4567",
-       "--username foo",
-       "--password bar",
-       "--exchange some_custom_exchange",
-       "--topic some_custom_topic",
-       "--vhost a_vhost",
-       "--verbose"
+        "https://www.override.com/",
+        "--host rabbitmq.some.custom.vhost",
+        "--port 4567",
+        "--username foo",
+        "--password bar",
+        "--exchange some_custom_exchange",
+        "--topic some_custom_topic",
+        "--vhost a_vhost",
+        "--verbose",
       ].join(" ").split(" ")
-    }
+    end
 
-    it "should override all of the default arguments that we're providing" do
+    it "overrides all of the default arguments that we're providing" do
       overriden = {
         host: "rabbitmq.some.custom.vhost",
         port: "4567",
@@ -72,14 +72,14 @@ describe GovukSeedCrawler::CLIParser do
         quiet: false,
         verbose: true,
         version: nil,
-        vhost: "a_vhost"
+        vhost: "a_vhost",
       }
 
-      expect(GovukSeedCrawler::CLIParser.new(arguments).parse.first).to eq(overriden)
+      expect(described_class.new(arguments).parse.first).to eq(overriden)
     end
 
-    it "should set the --quiet value" do
-      options, _ = GovukSeedCrawler::CLIParser.new(["foo.com", "--quiet"]).parse
+    it "sets the --quiet value" do
+      options, = described_class.new(["foo.com", "--quiet"]).parse
       expect(options).to eq(GovukSeedCrawler::CLIParser::DEFAULTS.merge(quiet: true))
     end
 
@@ -95,14 +95,14 @@ describe GovukSeedCrawler::CLIParser do
       it "sets the password if set using an environment variable" do
         set_amqp_pass("foobar")
 
-        expect(GovukSeedCrawler::CLIParser.new(["http://www.example.com"]).parse.first)
+        expect(described_class.new(["http://www.example.com"]).parse.first)
           .to include(password: "foobar")
       end
 
       it "picks the environment variable over the parameter if both are set" do
         set_amqp_pass("bar")
 
-        expect(GovukSeedCrawler::CLIParser.new(["http://www.example.com", "--password", "foo"]).parse.first)
+        expect(described_class.new(["http://www.example.com", "--password", "foo"]).parse.first)
           .to include(password: "bar")
       end
     end

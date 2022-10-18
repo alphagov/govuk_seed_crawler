@@ -1,4 +1,4 @@
-require 'sitemap-parser'
+require "sitemap-parser"
 
 module GovukSeedCrawler
   class Indexer
@@ -9,7 +9,7 @@ module GovukSeedCrawler
 
       GovukSeedCrawler.logger.info("Retrieving list of URLs for #{site_root}")
 
-      sitemap = SitemapParser.new("#{site_root}/sitemap.xml", {recurse: true})
+      sitemap = SitemapParser.new("#{site_root}/sitemap.xml", { recurse: true })
       @urls = sitemap.to_a
 
       GovukSeedCrawler.logger.info("Found #{@urls.count} URLs")

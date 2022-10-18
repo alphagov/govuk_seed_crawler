@@ -1,13 +1,16 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe GovukSeedCrawler::AmqpClient do
+  subject { described_class.new(options) }
+
   let(:exchange) { "govuk_seed_crawler_spec_exchange" }
-  let(:options) {{
-    :host => ENV.fetch("AMQP_HOST", "localhost"),
-    :user => ENV.fetch("AMQP_USER", "govuk_seed_crawler"),
-    :pass => ENV.fetch("AMQP_PASS", "govuk_seed_crawler"),
-  }}
-  subject { GovukSeedCrawler::AmqpClient.new(options) }
+  let(:options) do
+    {
+      host: ENV.fetch("AMQP_HOST", "localhost"),
+      user: ENV.fetch("AMQP_USER", "govuk_seed_crawler"),
+      pass: ENV.fetch("AMQP_PASS", "govuk_seed_crawler"),
+    }
+  end
 
   it "responds to #channel" do
     expect(subject).to respond_to(:channel)
@@ -19,14 +22,14 @@ describe GovukSeedCrawler::AmqpClient do
 
   it "closes the connection to the AMQP server" do
     mock_bunny = double(:mock_bunny,
-      :start => true, :create_channel => true, :close => true)
+                        start: true, create_channel: true, close: true)
     allow(Bunny).to receive(:new).and_return(mock_bunny)
     expect(mock_bunny).to receive(:close).once
 
     subject.close
   end
 
-  context "#publish" do
+  describe "#publish" do
     context "error handling" do
       it "raises an exception if exchange is nil" do
         expect {
@@ -49,7 +52,7 @@ describe GovukSeedCrawler::AmqpClient do
 
     it "allows publishing against an exchange" do
       expect(subject.publish(exchange, "#", "some body"))
-        .to_not be_nil
+        .not_to be_nil
     end
   end
 end
