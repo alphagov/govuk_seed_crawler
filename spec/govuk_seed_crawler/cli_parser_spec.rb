@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe GovukSeedCrawler::CLIParser do
   it "requires the site_root to be provided" do
     expect {

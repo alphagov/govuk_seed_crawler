@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe GovukSeedCrawler::Indexer do
   let(:mock_parser) { instance_double(SitemapParser, to_a: []) }
 

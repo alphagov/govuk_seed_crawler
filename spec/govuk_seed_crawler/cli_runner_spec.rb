@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe GovukSeedCrawler::CLIRunner do
   describe "printing the version" do
     it "does not try to connect to an AMQP server" do

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe GovukSeedCrawler::AmqpClient do
   let(:exchange) { "govuk_seed_crawler_spec_exchange" }
   let(:options) do

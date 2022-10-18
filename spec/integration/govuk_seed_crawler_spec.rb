@@ -1,5 +1,4 @@
 require "json"
-require "spec_helper"
 
 describe GovukSeedCrawler do
   def stub_sitemap

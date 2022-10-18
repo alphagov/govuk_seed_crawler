@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe GovukSeedCrawler::Seeder do
   let(:exchange) { "seeder_test_exchange" }
   let(:topic) { "#" }
