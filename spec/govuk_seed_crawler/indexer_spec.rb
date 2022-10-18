@@ -11,7 +11,8 @@ describe GovukSeedCrawler::Indexer do
   end
 
   it "calls SitemapParser with the sitemap file" do
-    expect(SitemapParser).to receive(:new).with("https://example.com/sitemap.xml", { recurse: true }).and_return(mock_parser)
+    allow(SitemapParser).to receive(:new).with("https://example.com/sitemap.xml", { recurse: true }).and_return(mock_parser)
     described_class.new("https://example.com")
+    expect(SitemapParser).to have_received(:new)
   end
 end
