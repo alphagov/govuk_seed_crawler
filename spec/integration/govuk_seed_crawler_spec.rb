@@ -38,17 +38,15 @@ describe GovukSeedCrawler do
     }
   end
   let(:rabbitmq_client) { GovukSeedCrawler::AmqpClient.new(options) }
+  let(:exchange) { rabbitmq_client.channel.topic(exchange_name, durable: true) }
+  let(:queue) { rabbitmq_client.channel.queue(queue_name) }
 
-  before do
-    @exchange = rabbitmq_client.channel.topic(exchange_name, durable: true)
-    @queue = rabbitmq_client.channel.queue(queue_name)
-    @queue.bind(@exchange, routing_key: topic)
-  end
-
-  after do
-    @queue.unbind(@exchange)
-    @queue.delete
-    @exchange.delete
+  around do |example|
+    queue.bind(exchange, routing_key: topic)
+    example.run
+    queue.unbind(exchange)
+    queue.delete
+    exchange.delete
     rabbitmq_client.close
   end
 
@@ -56,6 +54,6 @@ describe GovukSeedCrawler do
     stub_sitemap
     GovukSeedCrawler::Seeder.seed(site_root, options)
 
-    expect(@queue.message_count).to be(3)
+    expect(queue.message_count).to be(3)
   end
 end
