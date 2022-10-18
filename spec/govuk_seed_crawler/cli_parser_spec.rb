@@ -33,27 +33,15 @@ describe GovukSeedCrawler::CLIParser do
       # Get a valid options response as help closes early with SystemExit.
       options = GovukSeedCrawler::CLIParser.new(["http://www.foo.com/"]).options
 
-      temp_stdout do |caught_stdout|
-        expect {
-          _, _ = GovukSeedCrawler::CLIParser.new(["-h"]).parse
-        }.to raise_exception(SystemExit) { |e|
-          expect(e.status).to eq(0)
-        }
-
-        expect(caught_stdout.strip).to eq(options.help)
-      end
+      expect { GovukSeedCrawler::CLIParser.new(["-h"]).parse }
+        .to output(options.help + "\n").to_stdout
+        .and raise_exception(SystemExit) { |e| expect(e.status).to eq(0) }
     end
 
     it "should show the version number and exit" do
-      temp_stdout do |caught_stdout|
-        expect {
-          _, _ = GovukSeedCrawler::CLIParser.new(["--version"]).parse
-        }.to raise_exception(SystemExit) { |e|
-          expect(e.status).to eq(0)
-        }
-
-        expect(caught_stdout.strip).to eq("Version: #{GovukSeedCrawler::VERSION}")
-      end
+      expect { GovukSeedCrawler::CLIParser.new(["--version"]).parse }
+        .to output("Version: #{GovukSeedCrawler::VERSION}\n").to_stdout
+        .and raise_exception(SystemExit) { |e| expect(e.status).to eq(0) }
     end
   end
 

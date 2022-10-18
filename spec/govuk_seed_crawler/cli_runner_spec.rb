@@ -5,41 +5,23 @@ describe GovukSeedCrawler::CLIRunner do
     it "should not try to connect to an AMQP server" do
       expect(Bunny).not_to receive(:new)
 
-      temp_stdout do |caught_stdout|
-        expect {
-          GovukSeedCrawler::CLIRunner.new(["--version"]).run
-        }.to raise_exception(SystemExit) { |exit|
-          expect(exit.status).to eq(0)
-        }
-
-        expect(caught_stdout.strip).to eq("Version: #{GovukSeedCrawler::VERSION}")
-      end
+      expect { GovukSeedCrawler::CLIRunner.new(["--version"]).run }
+        .to output("Version: #{GovukSeedCrawler::VERSION}\n").to_stdout
+        .and raise_exception(SystemExit) { |e| expect(e.status).to eq(0) }
     end
   end
 
   describe "catching any CLIException objects and exiting with a status 1" do
     it "prints to STDOUT for too many arguments" do
-      temp_stdout do |caught_stdout|
-        expect {
-          GovukSeedCrawler::CLIRunner.new(["a", "b"])
-        }.to raise_exception(SystemExit) { |exit|
-          expect(exit.status).to eq(2)
-        }
-
-        expect(caught_stdout.strip).to include("too many arguments provided")
-      end
+      expect { GovukSeedCrawler::CLIRunner.new(["a", "b"]).run }
+        .to output(/\Atoo many arguments provided/).to_stdout
+        .and raise_exception(SystemExit) { |e| expect(e.status).to eq(2) }
     end
 
     it "prints to STDOUT when site_root not set" do
-      temp_stdout do |caught_stdout|
-        expect {
-          GovukSeedCrawler::CLIRunner.new(["--verbose"])
-        }.to raise_exception(SystemExit) { |exit|
-          expect(exit.status).to eq(2)
-        }
-
-        expect(caught_stdout.strip).to include("site_root must be provided")
-      end
+      expect { GovukSeedCrawler::CLIRunner.new(["--verbose"]).run }
+        .to output(/\Asite_root must be provided/).to_stdout
+        .and raise_exception(SystemExit) { |e| expect(e.status).to eq(2) }
     end
   end
 

@@ -30,10 +30,3 @@ RSpec.configure do |config|
 end
 
 WebMock.disable_net_connect!
-
-def temp_stdout
-  $stdout = StringIO.new
-  yield $stdout.string
-ensure
-  $stdout = STDOUT
-end
