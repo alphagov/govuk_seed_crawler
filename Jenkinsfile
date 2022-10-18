@@ -21,12 +21,8 @@ node {
       govuk.bundleGem()
     }
 
-    stage('Spec tests') {
-      govuk.runRakeTask('spec')
-    }
-
-    stage('Integration tests') {
-      govuk.runRakeTask('integration')
+    stage('Run tests') {
+      govuk.runRakeTask('default')
     }
 
     if (env.BRANCH_NAME == 'main') {
