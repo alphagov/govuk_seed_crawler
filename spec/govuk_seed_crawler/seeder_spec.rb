@@ -12,8 +12,8 @@ describe GovukSeedCrawler::Seeder do
     }
   end
 
-  let(:mock_get_urls) { double(:mock_get_urls, urls: true) }
-  let(:mock_amqp_client) { double(:mock_amqp_client, close: true) }
+  let(:mock_get_urls) { instance_double(GovukSeedCrawler::Indexer, urls: true) }
+  let(:mock_amqp_client) { instance_double(GovukSeedCrawler::AmqpClient, close: true) }
 
   let(:urls) do
     [

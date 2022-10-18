@@ -19,8 +19,10 @@ describe GovukSeedCrawler::AmqpClient do
   end
 
   it "closes the connection to the AMQP server" do
-    mock_bunny = double(:mock_bunny,
-                        start: true, create_channel: true, close: true)
+    mock_bunny = instance_double(Bunny::Session,
+                                 start: true,
+                                 create_channel: true,
+                                 close: true)
     allow(Bunny).to receive(:new).and_return(mock_bunny)
     expect(mock_bunny).to receive(:close).once
 
