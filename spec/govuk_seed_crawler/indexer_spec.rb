@@ -1,21 +1,18 @@
-require 'spec_helper'
-
 describe GovukSeedCrawler::Indexer do
-  subject { GovukSeedCrawler::Indexer.new('https://example.com') }
+  let(:mock_parser) { instance_double(SitemapParser, to_a: []) }
 
-  context "under normal usage" do
-    let(:mock_parser) do
-      double(:mock_parser, :to_a => [])
-    end
+  it "responds to Indexer#urls" do
+    allow(SitemapParser).to receive(:new).and_return(mock_parser)
+    instance = nil
+    expect { instance = described_class.new("https://example.com") }
+      .to output.to_stdout
+    expect(instance).to respond_to(:urls)
+  end
 
-    it "responds to Indexer#urls" do
-      allow(SitemapParser).to receive(:new).and_return(mock_parser)
-      expect(subject).to respond_to(:urls)
-    end
-
-    it "calls SitemapParser with the sitemap file" do
-      expect(SitemapParser).to receive(:new).with('https://example.com/sitemap.xml', {:recurse => true}).and_return(mock_parser)
-      subject
-    end
+  it "calls SitemapParser with the sitemap file" do
+    allow(SitemapParser).to receive(:new).with("https://example.com/sitemap.xml", { recurse: true }).and_return(mock_parser)
+    expect { described_class.new("https://example.com") }
+      .to output.to_stdout
+    expect(SitemapParser).to have_received(:new)
   end
 end

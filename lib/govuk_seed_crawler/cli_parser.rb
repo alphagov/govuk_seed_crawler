@@ -1,4 +1,4 @@
-require 'slop'
+require "slop"
 
 module GovukSeedCrawler
   class CLIException < StandardError
@@ -12,17 +12,17 @@ module GovukSeedCrawler
 
   class CLIParser
     DEFAULTS = {
-      :exchange => "govuk_crawler_exchange",
-      :help => nil,
-      :host => "localhost",
-      :password => "guest",
-      :port => "5672",
-      :quiet => false,
-      :topic => "#",
-      :username => "guest",
-      :verbose => false,
-      :version => nil,
-      :vhost => "/"
+      exchange: "govuk_crawler_exchange",
+      help: nil,
+      host: "localhost",
+      password: "guest",
+      port: "5672",
+      quiet: false,
+      topic: "#",
+      username: "guest",
+      verbose: false,
+      version: nil,
+      vhost: "/",
     }.freeze
 
     ENV_AMQP_PASS_KEY = "GOVUK_CRAWLER_AMQP_PASS".freeze
@@ -32,19 +32,19 @@ module GovukSeedCrawler
     end
 
     def options
-      Slop.parse!(@argv_array, :help => true) do
-        banner <<-EOS
-Usage: #{$PROGRAM_NAME} site_root [options]
+      Slop.parse!(@argv_array, help: true) do
+        banner <<~HELP
+          Usage: #{$PROGRAM_NAME} site_root [options]
 
-Seeds an AMQP topic exchange with messages, each containing a URL, for the GOV.UK Crawler Worker
-to consume:
+          Seeds an AMQP topic exchange with messages, each containing a URL, for the GOV.UK Crawler Worker
+          to consume:
 
-https://github.com/alphagov/govuk_crawler_worker
+          https://github.com/alphagov/govuk_crawler_worker
 
-The AMQP password can also be set as an environment variable and will be read from
-`#{ENV_AMQP_PASS_KEY}`. If both the environment variable and command-line option for password
-are set, the environment variable will take higher precedent.
-        EOS
+          The AMQP password can also be set as an environment variable and will be read from
+          `#{ENV_AMQP_PASS_KEY}`. If both the environment variable and command-line option for password
+          are set, the environment variable will take higher precedent.
+        HELP
 
         on :version, "Display version and exit" do
           puts "Version: #{GovukSeedCrawler::VERSION}"
@@ -75,7 +75,7 @@ are set, the environment variable will take higher precedent.
       options_hash = opts.to_hash
       options_hash[:password] = ENV[ENV_AMQP_PASS_KEY] unless ENV[ENV_AMQP_PASS_KEY].nil?
 
-      return options_hash, @argv_array.first
+      [options_hash, @argv_array.first]
     end
   end
 end

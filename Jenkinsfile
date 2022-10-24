@@ -17,20 +17,12 @@ node {
       govuk.cleanupGit()
     }
 
-    stage('Configure environment') {
-      govuk.setEnvar('RBENV_VERSION', '2.6.3')
-    }
-
     stage('Bundle install') {
       govuk.bundleGem()
     }
 
-    stage('Spec tests') {
-      govuk.runRakeTask('spec')
-    }
-
-    stage('Integration tests') {
-      govuk.runRakeTask('integration')
+    stage('Run tests') {
+      govuk.runRakeTask('default')
     }
 
     if (env.BRANCH_NAME == 'main') {

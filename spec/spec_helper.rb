@@ -1,5 +1,7 @@
-require 'govuk_seed_crawler'
-require 'webmock/rspec'
+require "govuk_seed_crawler"
+require "webmock/rspec"
+
+WebMock.disable_net_connect!
 
 RSpec.configure do |config|
   config.order = :random
@@ -27,13 +29,9 @@ RSpec.configure do |config|
     # a real object. This is generally recommended.
     mocks.verify_partial_doubles = true
   end
-end
 
-WebMock.disable_net_connect!
-
-def temp_stdout
-  $stdout = StringIO.new
-  yield $stdout.string
-ensure
-  $stdout = STDOUT
+  config.before do
+    # reset logger before each invocation so we can catch stdout
+    GovukSeedCrawler.logger = nil
+  end
 end

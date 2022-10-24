@@ -13,10 +13,10 @@ module GovukSeedCrawler
     end
 
     def run
-      Seeder::seed(@site_root, @options)
+      Seeder.seed(@site_root, @options)
     end
 
-    private
+  private
 
     def set_logging_level(cli_options)
       if cli_options[:verbose]

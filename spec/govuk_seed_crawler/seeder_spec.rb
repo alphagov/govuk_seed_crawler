@@ -1,29 +1,27 @@
-require 'spec_helper'
-
 describe GovukSeedCrawler::Seeder do
   let(:exchange) { "seeder_test_exchange" }
   let(:topic) { "#" }
   let(:root_url) { "https://www.example.com" }
 
-  let(:options) {{
-    :exchange => exchange,
-    :topic => topic,
-  }}
+  let(:options) do
+    {
+      exchange: exchange,
+      topic: topic,
+    }
+  end
 
-  let(:mock_get_urls) { double(:mock_get_urls, :urls => true) }
-  let(:mock_amqp_client) { double(:mock_amqp_client, :close => true) }
+  let(:mock_get_urls) { instance_double(GovukSeedCrawler::Indexer, urls: true) }
+  let(:mock_amqp_client) { instance_double(GovukSeedCrawler::AmqpClient, close: true) }
 
   let(:urls) do
     [
-     "https://example.com/foo",
-     "https://example.com/bar",
-     "https://example.com/baz",
+      "https://example.com/foo",
+      "https://example.com/bar",
+      "https://example.com/baz",
     ]
   end
 
-  subject { GovukSeedCrawler::Seeder::seed(root_url, options) }
-
-  before(:each) do
+  before do
     allow(GovukSeedCrawler::Indexer).to receive(:new)
       .with(root_url)
       .and_return(mock_get_urls)
@@ -32,20 +30,20 @@ describe GovukSeedCrawler::Seeder do
       .with(options).and_return(mock_amqp_client)
   end
 
-  context "under normal usage" do
-    it "publishes urls to the queue" do
-      urls.each do |url|
-        expect(mock_amqp_client).to receive(:publish)
-          .with(exchange, topic, url)
-      end
-
-      subject
+  it "publishes urls to the queue" do
+    urls.each do |url|
+      expect(mock_amqp_client).to receive(:publish)
+        .with(exchange, topic, url)
     end
 
-    it "closes the connection when done" do
-      allow(mock_amqp_client).to receive(:publish)
-      expect(mock_amqp_client).to receive(:close)
-      subject
-    end
+    expect { described_class.seed(root_url, options) }
+      .to output.to_stdout
+  end
+
+  it "closes the connection when done" do
+    allow(mock_amqp_client).to receive(:publish)
+    expect(mock_amqp_client).to receive(:close)
+    expect { described_class.seed(root_url, options) }
+      .to output.to_stdout
   end
 end

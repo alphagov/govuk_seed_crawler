@@ -1,4 +1,4 @@
-require 'bunny'
+require "bunny"
 
 module GovukSeedCrawler
   class AmqpClient
@@ -21,8 +21,8 @@ module GovukSeedCrawler
 
       GovukSeedCrawler.logger.debug("Publishing '#{body}' to topic '#{topic}'")
 
-      @channel.topic(exchange, :durable => true)
-        .publish(body, :routing_key => topic)
+      @channel.topic(exchange, durable: true)
+        .publish(body, routing_key: topic)
     end
   end
 end
