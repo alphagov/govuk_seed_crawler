@@ -33,7 +33,7 @@ describe GovukSeedCrawler::CLIRunner do
       expect(GovukSeedCrawler.logger.level).to eq(Logger::INFO)
     end
 
-    it "sets to ERROR for quite" do
+    it "sets to ERROR for quiet" do
       described_class.new(["http://www.example.com", "--quiet"])
       expect(GovukSeedCrawler.logger.level).to eq(Logger::ERROR)
     end

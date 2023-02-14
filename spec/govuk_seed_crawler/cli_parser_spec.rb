@@ -32,7 +32,7 @@ describe GovukSeedCrawler::CLIParser do
       options = described_class.new(["http://www.foo.com/"]).options
 
       expect { described_class.new(["-h"]).parse }
-        .to output("#{options.help}\n").to_stdout
+        .to output(options.to_s).to_stdout
         .and raise_exception(SystemExit) { |e| expect(e.status).to eq(0) }
     end
 
@@ -66,10 +66,8 @@ describe GovukSeedCrawler::CLIParser do
         password: "bar",
         exchange: "some_custom_exchange",
         topic: "some_custom_topic",
-        help: nil,
         quiet: false,
         verbose: true,
-        version: nil,
         vhost: "a_vhost",
       }
 
