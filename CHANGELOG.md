@@ -6,6 +6,7 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
-## Unreleased
+## 3.2.0
 
-- Drop support for Ruby < 2.7
+- Drop support for Ruby < 2.7 ([#23](https://github.com/alphagov/govuk_seed_crawler/pull/23))
+- Update major version of 'Slop' dependency ([#17](https://github.com/alphagov/govuk_seed_crawler/pull/17))
