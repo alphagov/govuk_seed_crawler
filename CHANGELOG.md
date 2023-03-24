@@ -10,6 +10,10 @@
 
 * Drop support for Ruby 2.7.
 
+## 3.2.1
+
+- Update minimum Slop requirement from 3.6 to 4.0 ([#38](https://github.com/alphagov/govuk_seed_crawler/pull/38))
+
 ## 3.2.0
 
 - Drop support for Ruby < 2.7 ([#23](https://github.com/alphagov/govuk_seed_crawler/pull/23))
